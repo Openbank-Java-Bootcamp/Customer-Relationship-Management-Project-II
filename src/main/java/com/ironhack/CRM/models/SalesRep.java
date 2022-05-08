@@ -2,15 +2,17 @@ package com.ironhack.CRM.models;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Entity
 @Table(name = "sales_rep")
 public class SalesRep {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private String id;
 
     private String name;
+
+    private static AtomicInteger salesRepIdCounter = new AtomicInteger();
 
     @OneToMany(mappedBy = "salesRep", cascade = CascadeType.ALL)
     private List<Lead> leadList;
@@ -25,20 +27,16 @@ public class SalesRep {
     public SalesRep() {
     }
 
-    public SalesRep(Integer id, String name, List<Lead> leadList, List<Opportunity> opportunityList) {
-        this.id = id;
+    public SalesRep(String name, List<Lead> leadList, List<Opportunity> opportunityList) {
+        this.id = createID();
         this.name = name;
         this.leadList = leadList;
         this.opportunityList = opportunityList;
     }
 
 
-
     //SETTERS
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public void setName(String name) {
         this.name = name;
@@ -55,7 +53,7 @@ public class SalesRep {
     //GETTERS
 
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
@@ -69,6 +67,11 @@ public class SalesRep {
 
     public List<Opportunity> getOpportunityList() {
         return opportunityList;
+    }
+
+    //METHODS
+    public static String createID() {
+        return String.valueOf(salesRepIdCounter.getAndIncrement() + 1);
     }
 
     //EQUALS, HASHCODE & ToString
@@ -99,7 +102,7 @@ public class SalesRep {
     @Override
     public String toString() {
         return "SalesRep{" +
-                "id=" + id +
+                "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", leadList=" + leadList +
                 ", opportunityList=" + opportunityList +

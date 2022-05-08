@@ -3,16 +3,13 @@ package com.ironhack.CRM.models;
 import com.ironhack.CRM.enums.Industry;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 @Entity
 @Table(name= "account")
 public class Account {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private String id;
 
     @Enumerated(EnumType.STRING)
     private Industry industry;
@@ -21,40 +18,35 @@ public class Account {
     private String city;
     private String country;
 
-    //PK one account has many contacts
-    @OneToMany(mappedBy ="account", cascade = CascadeType.ALL)
-    private List<Contact> contactList;
 
-    //PK one account has many opportunities
     @OneToMany(mappedBy ="account", cascade = CascadeType.ALL)
-    private List<Opportunity> opportunityList;
+    private Map<String, Contact> contactList;
+
+
+    @OneToMany(mappedBy ="account", cascade = CascadeType.ALL)
+    private Map<String, Opportunity> opportunityList;
     private static AtomicInteger accountIdCounter = new AtomicInteger();
     // Should Account have Lead's company name and be added to constructor?
 
 
 
-
     //CONSTRUCTORS
-
 
     public Account() {
     }
 
-    public Account(Integer id, Industry industry, int employeeCount, String city, String country, List<Contact> contactList) {
-        this.id = id;
+    public Account(Industry industry, int employeeCount, String city, String country, Map<String, Contact> contactList, Map<String, Opportunity> opportunityList) {
+        this.id = createID();
         this.industry = industry;
         this.employeeCount = employeeCount;
         this.city = city;
         this.country = country;
         this.contactList = contactList;
+        this.opportunityList = opportunityList;
     }
+
 
     //SETTERS
-
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public void setIndustry(Industry industry) {
         this.industry = industry;
@@ -72,12 +64,18 @@ public class Account {
         this.country = country;
     }
 
-    public void setContactList(List<Contact> contactList) {
+    public void setContactList(Map<String, Contact> contactList) {
         this.contactList = contactList;
     }
 
+    public void setOpportunityList(Map<String, Opportunity> opportunityList) {
+        this.opportunityList = opportunityList;
+    }
+
     //GETTERS
-    public Integer getId() {
+
+
+    public String getId() {
         return id;
     }
 
@@ -97,10 +95,13 @@ public class Account {
         return country;
     }
 
-    public List<Contact> getContactList() {
+    public Map<String, Contact> getContactList() {
         return contactList;
     }
 
+    public Map<String, Opportunity> getOpportunityList() {
+        return opportunityList;
+    }
 
 
 
@@ -145,7 +146,7 @@ public class Account {
     @Override
     public String toString() {
         return "Account{" +
-                "id=" + id +
+                "id='" + id + '\'' +
                 ", industry=" + industry +
                 ", employeeCount=" + employeeCount +
                 ", city='" + city + '\'' +
