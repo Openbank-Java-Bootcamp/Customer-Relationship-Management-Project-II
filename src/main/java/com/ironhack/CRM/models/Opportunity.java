@@ -5,19 +5,19 @@ import com.ironhack.CRM.enums.Product;
 import com.ironhack.CRM.enums.Status;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 @Entity
 @Table(name = "opportunity")
 public class Opportunity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private String id;
     @Enumerated(EnumType.STRING)
     private Product product;
     private int quantity;
 
-    //PK one opportunity has one contact
-    @OneToOne
+    //Many opportunities To One contact
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contact_id")
     private Contact decisionMaker;
     @Enumerated(EnumType.STRING)
@@ -41,21 +41,17 @@ public class Opportunity {
     public Opportunity() {
     }
 
-    public Opportunity(Integer id, Product product, int quantity, Contact decisionMaker, Status status, Account account) {
-        this.id = id;
+    public Opportunity(Product product, int quantity, Contact decisionMaker, SalesRep salesRep) {
+        this.id = createID();
         this.product = product;
         this.quantity = quantity;
         this.decisionMaker = decisionMaker;
-        this.status = status;
-        this.account = account;
+        this.setStatus(Status.OPEN);
+        this.salesRep = salesRep;
     }
+
 
     //SETTERS
-
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public void setProduct(Product product) {
         this.product = product;
@@ -73,18 +69,11 @@ public class Opportunity {
         this.status = status;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
-    public void setSalesRep(SalesRep salesRep) {
-        this.salesRep = salesRep;
-    }
 
     //GETTERS
 
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
@@ -104,13 +93,6 @@ public class Opportunity {
         return status;
     }
 
-    public Account getAccount() {
-        return account;
-    }
-
-    public SalesRep getSalesRep() {
-        return salesRep;
-    }
 
     //METHODS
     public static String createID() {
@@ -120,6 +102,7 @@ public class Opportunity {
 
     //EQUALS, HASHCODE & ToString
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -127,38 +110,25 @@ public class Opportunity {
 
         Opportunity that = (Opportunity) o;
 
-        if (id != that.id) return false;
         if (quantity != that.quantity) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (product != that.product) return false;
         if (decisionMaker != null ? !decisionMaker.equals(that.decisionMaker) : that.decisionMaker != null)
             return false;
         if (status != that.status) return false;
-        if (salesRep != null ? !salesRep.equals(that.salesRep) : that.salesRep != null) return false;
-        return account != null ? account.equals(that.account) : that.account == null;
+        return salesRep != null ? salesRep.equals(that.salesRep) : that.salesRep == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (product != null ? product.hashCode() : 0);
         result = 31 * result + quantity;
         result = 31 * result + (decisionMaker != null ? decisionMaker.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (salesRep != null ? salesRep.hashCode() : 0);
-        result = 31 * result + (account != null ? account.hashCode() : 0);
         return result;
     }
 
-    @Override
-    public String toString() {
-        return "Opportunity{" +
-                "id=" + id +
-                ", product=" + product +
-                ", quantity=" + quantity +
-                ", decisionMaker=" + decisionMaker +
-                ", status=" + status +
-                ", salesRep=" + salesRep +
-                ", account=" + account +
-                '}';
-    }
+
 }

@@ -3,12 +3,12 @@ package com.ironhack.CRM.models;
 import javax.persistence.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+
 @Entity
 @Table(name = "lead")
 public class Lead {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private String id;
     private String name;
     @Column(name = "phone_number")
     private int phoneNumber;
@@ -25,16 +25,18 @@ public class Lead {
     //CONSTRUCTORS
 
 
-    public Lead(Integer id, String name, int phoneNumber, String email, String companyName) {
-        this.id = id;
+    public Lead(String name, int phoneNumber, String email, String companyName, SalesRep salesRep) {
+        this.id = createID();
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.companyName = companyName;
+        this.salesRep = salesRep;
+
     }
 
     // only used to create a null Lead for testing purposes
-    public Lead(Integer leadsName, String leadsPhoneNumberAsInt, String leadsEmail, String leadsCompany) {}
+    public Lead(String leadsName, String leadsPhoneNumberAsInt, String leadsEmail, String leadsCompany) {}
 
     public Lead() {
 
@@ -43,10 +45,6 @@ public class Lead {
 
     //SETTERS
 
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public void setName(String name) {
         this.name = name;
@@ -68,10 +66,10 @@ public class Lead {
         this.salesRep = salesRep;
     }
 
+
     //GETTERS
 
-
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
@@ -96,7 +94,8 @@ public class Lead {
     }
 
     //METHODS
-    public static String createId() {
+
+    private static String createID() {
         return String.valueOf(leadIdCounter.getAndIncrement() + 1);
     }
 
@@ -136,7 +135,7 @@ public class Lead {
     @Override
     public String toString() {
         return "Lead{" +
-                "id=" + id +
+                "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", phoneNumber=" + phoneNumber +
                 ", email='" + email + '\'' +

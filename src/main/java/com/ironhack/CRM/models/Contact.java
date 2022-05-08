@@ -3,27 +3,27 @@ package com.ironhack.CRM.models;
 import org.springframework.data.util.Lazy;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 @Entity
 @Table(name = "contact")
 public class Contact {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private String id;
     private String name;
     @Column(name = "phone_number")
     private int phoneNumber;
     private String email;
     private static AtomicInteger contactIdCounter = new AtomicInteger();
 
-    //FK one account has many contacts
+    //FK many contacts to one account
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     private Account account;
 
-    //FK one opportunity has one contact
-    @OneToOne(mappedBy = "decisionMaker", fetch = FetchType.LAZY)
-    private Opportunity opportunity;
+    //FK One contact To Many accounts
+//    @OneToMany(mappedBy = "decisionMaker", cascade = CascadeType.ALL)
+//    private List<Opportunity> opportunity;
 
 
 
@@ -32,18 +32,17 @@ public class Contact {
     public Contact() {
     }
 
-    public Contact(Integer id, String name, int phoneNumber, String email, Account account, Opportunity opportunity) {
-        this.id = id;
+    public Contact(String name, int phoneNumber, String email) {
+        this.id = createID();
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.account = account;
-        this.opportunity = opportunity;
     }
 
     //GETTERS
 
-    public Integer getId() {
+
+    public String getId() {
         return id;
     }
 
@@ -59,21 +58,10 @@ public class Contact {
         return email;
     }
 
-    public Account getAccount() {
-        return account;
-    }
-
-    public Opportunity getOpportunity() {
-        return opportunity;
-    }
 
 
     //SETTERS
 
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public void setName(String name) {
         this.name = name;
@@ -87,13 +75,6 @@ public class Contact {
         this.email = email;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
-    public void setOpportunity(Opportunity opportunity) {
-        this.opportunity = opportunity;
-    }
 
     //METHODS
     public static String createID() {
@@ -104,6 +85,7 @@ public class Contact {
 
     //EQUALS, HASHCODE & ToString
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -111,34 +93,28 @@ public class Contact {
 
         Contact contact = (Contact) o;
 
-        if (id != contact.id) return false;
         if (phoneNumber != contact.phoneNumber) return false;
+        if (id != null ? !id.equals(contact.id) : contact.id != null) return false;
         if (name != null ? !name.equals(contact.name) : contact.name != null) return false;
-        if (email != null ? !email.equals(contact.email) : contact.email != null) return false;
-        if (account != null ? !account.equals(contact.account) : contact.account != null) return false;
-        return opportunity != null ? opportunity.equals(contact.opportunity) : contact.opportunity == null;
+        return email != null ? email.equals(contact.email) : contact.email == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + phoneNumber;
         result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (account != null ? account.hashCode() : 0);
-        result = 31 * result + (opportunity != null ? opportunity.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "Contact{" +
-                "id=" + id +
+                "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", phoneNumber=" + phoneNumber +
                 ", email='" + email + '\'' +
-                ", account=" + account +
-                ", opportunity=" + opportunity +
                 '}';
     }
 }
