@@ -19,13 +19,13 @@ public class Lead {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sales_rep_id")
-    private SalesRep salesRep;
+    private String salesRep;
 
 
     //CONSTRUCTORS
 
 
-    public Lead(String name, int phoneNumber, String email, String companyName, SalesRep salesRep) {
+    public Lead(String name, int phoneNumber, String email, String companyName, String salesRep) {
         this.id = createID();
         this.name = name;
         this.phoneNumber = phoneNumber;
@@ -62,7 +62,7 @@ public class Lead {
         this.companyName = companyName;
     }
 
-    public void setSalesRep(SalesRep salesRep) {
+    public void setSalesRep(String salesRep) {
         this.salesRep = salesRep;
     }
 
@@ -89,7 +89,7 @@ public class Lead {
         return companyName;
     }
 
-    public SalesRep getSalesRep() {
+    public String getSalesRep() {
         return salesRep;
     }
 

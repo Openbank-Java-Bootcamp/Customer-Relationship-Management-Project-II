@@ -72,6 +72,14 @@ public class CRM {
             throw new IllegalArgumentException("Invalid input");
         }
     }
+    public void verifySalesRep(String salesId) {
+        String regx = "[0-9]+"; //Only numbers?
+        Pattern pattern = Pattern.compile(regx,Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(salesId);
+        if(!matcher.find()) {
+            throw new IllegalArgumentException("Enter a valid number");
+        }
+    }
 
     public void createLead(Scanner scanner) {
         System.out.println("\nPlease provide the following information to create a Lead:");
@@ -79,6 +87,7 @@ public class CRM {
         String leadPhone = null;
         String leadEmail = null;
         String leadCompany = null;
+        String salesRep = null;
         while (leadName == null) {
             try {
                 System.out.print("Name: ");
@@ -121,6 +130,16 @@ public class CRM {
             }
         }
         //SalesRep part
+        while (salesRep == null) {
+            try {
+                System.out.print("Sales Id: ");
+                salesRep = scanner.nextLine();
+                verifySalesRep(salesRep);
+            } catch (IllegalArgumentException e) {
+                salesRep = null;
+                System.err.println("Only numbers allowed");
+            }
+        }
         Lead newLead = new Lead(leadName, leadPhoneAsInt, leadEmail, leadCompany, salesRep);
         leadList.put(newLead.getId(), newLead);
         System.out.println("\n\nLead created: ");
@@ -341,6 +360,7 @@ public class CRM {
 
     public Opportunity createOpportunity(Product productType, int productQuantity, Contact newContact){
         //add the same as in Lead
+
         Opportunity newOpportunity = new Opportunity(productType, productQuantity, newContact, salesRep);
         opportunityList.put(newOpportunity.getId(), newOpportunity);
         return newOpportunity;
