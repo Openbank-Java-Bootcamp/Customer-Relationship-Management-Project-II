@@ -339,7 +339,8 @@ public class CRM {
         }
     }
 
-    public Opportunity createOpportunity(Product productType, int productQuantity, Contact newContact, SalesRep salesRep){
+    public Opportunity createOpportunity(Product productType, int productQuantity, Contact newContact){
+        //add the same as in Lead
         Opportunity newOpportunity = new Opportunity(productType, productQuantity, newContact, salesRep);
         opportunityList.put(newOpportunity.getId(), newOpportunity);
         return newOpportunity;
