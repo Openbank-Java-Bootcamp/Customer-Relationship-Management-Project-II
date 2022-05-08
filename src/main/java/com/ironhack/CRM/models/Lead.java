@@ -134,13 +134,12 @@ public class Lead {
 
     @Override
     public String toString() {
-        return "Lead{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", phoneNumber=" + phoneNumber +
-                ", email='" + email + '\'' +
-                ", companyName='" + companyName + '\'' +
-                ", salesRep=" + salesRep +
-                '}';
+        return "Lead " + id +
+                "\nname:  " + name +
+                "\nphoneNumber:  " + phoneNumber +
+                "\nemail:  " + email +
+                "\ncompanyName:  " + companyName +
+                "\n\nsalesRep:  " + salesRep
+                ;
     }
 }

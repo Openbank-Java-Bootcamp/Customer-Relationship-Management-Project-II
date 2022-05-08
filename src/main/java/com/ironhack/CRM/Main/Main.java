@@ -2,10 +2,7 @@ package com.ironhack.CRM.Main;
 
 import com.ironhack.CRM.CRM.CRM;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -15,6 +12,7 @@ public class Main {
         crm.menu(scanner);
 
         scanner.close();
+
 
 
     }

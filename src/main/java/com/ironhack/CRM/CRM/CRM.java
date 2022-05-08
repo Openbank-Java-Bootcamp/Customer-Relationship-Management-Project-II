@@ -5,10 +5,8 @@ import com.ironhack.CRM.ConsoleColors.ConsoleColors;
 import com.ironhack.CRM.enums.Industry;
 import com.ironhack.CRM.enums.Product;
 import com.ironhack.CRM.enums.Status;
-import com.ironhack.CRM.models.Account;
-import com.ironhack.CRM.models.Contact;
-import com.ironhack.CRM.models.Lead;
-import com.ironhack.CRM.models.Opportunity;
+import com.ironhack.CRM.models.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -23,9 +21,11 @@ public class CRM {
     private Map<String, Contact> contactList = new HashMap<>();
     private Map<String, Opportunity> opportunityList = new HashMap<>();
     private Map<String, Account> accountList = new HashMap<>();
+    public Map<String, SalesRep> salesRepList = new HashMap<>();
 
 
-    private static String menuOptions = "\n\nEnter " + ConsoleColors.BLUE + "NEW LEAD" + ConsoleColors.RESET + " to create a new Lead.\n" +
+    private static String menuOptions = "\n\nEnter " + ConsoleColors.BLUE + "NEW SALESREP" + ConsoleColors.RESET + " to create a new Sales Rep.\n" +
+            "Enter " + ConsoleColors.BLUE + "NEW LEAD" + ConsoleColors.RESET + " to create a new Lead.\n" +
             "Enter " + ConsoleColors.BLUE + "SHOW LEADS" + ConsoleColors.RESET + " to see all Leads.\n" +
             "Enter " + ConsoleColors.BLUE + "LOOKUP LEAD <id>" + ConsoleColors.RESET + " to see a particular Lead.\n" +
             "Enter " + ConsoleColors.BLUE + "CONVERT <id>" + ConsoleColors.RESET + " to convert a Lead to an Opportunity.\n" +
@@ -41,7 +41,9 @@ public class CRM {
     }
 
     public void verifyName(String name) {
-        String regx = "[a-zA-Z]+\\.?";
+        //String regx = "^[a-zA-Z]+\\.?$";
+        ///^[a-z ,.'-]+$/i
+        String regx = "^[a-zA-Z][a-z ,.'-]+$";
         Pattern pattern = Pattern.compile(regx,Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(name);
         if(!matcher.find()) {
@@ -82,6 +84,7 @@ public class CRM {
         String leadPhone = null;
         String leadEmail = null;
         String leadCompany = null;
+        SalesRep salesRep = null;
         while (leadName == null) {
             try {
                 System.out.print("Name: ");
@@ -123,10 +126,37 @@ public class CRM {
                 System.err.println("Invalid input");
             }
         }
-        Lead newLead = new Lead(leadName, leadPhoneAsInt, leadEmail, leadCompany);
+        while (salesRep == null) {
+            try {
+                salesRep = chooseSalesRep(scanner);
+            } catch (Exception e) {
+                System.err.print("Invalid Sales Rep id.");
+            }
+        }
+        Lead newLead = new Lead(leadName, leadPhoneAsInt, leadEmail, leadCompany, salesRep);
         leadList.put(newLead.getId(), newLead);
         System.out.println("\n\nLead created: ");
         System.out.println(newLead.toString());
+    }
+
+
+    public SalesRep chooseSalesRep(Scanner scanner) throws NoSuchElementException{
+        System.out.print("Sales Rep id:  ");
+        String salesRepId = scanner.nextLine();
+        if (!salesRepList.containsKey(salesRepId)) {
+            throw new NoSuchElementException("Invalid Sales Rep Id");
+        }
+        SalesRep salesRep = salesRepList.get(salesRepId);
+        return salesRep;
+    }
+
+    public void showSalesReps() {
+        try { for (Map.Entry<String, SalesRep> entry : salesRepList.entrySet()) {
+            System.out.println(entry.getValue());
+        }
+        } catch (Exception e) {
+            System.out.println("\n\nNo SalesReps to show\n\n");
+        }
     }
 
     public void showLeads() {
@@ -162,20 +192,39 @@ public class CRM {
         return newContact;
     }
 
+    public SalesRep createSalesRep(Scanner scanner) {
+        try {
+            System.out.print("\nSales Rep's name:  ");
+            String name = scanner.nextLine();
+            verifyName(name);
+            SalesRep newSalesRep = new SalesRep(name);
+            salesRepList.put(newSalesRep.getId(), newSalesRep);
+            System.out.println("\n\nSalesRep created:\n"+ newSalesRep.toString());
+            return newSalesRep;
+        } catch (IllegalArgumentException e) {
+            System.err.println("Invalid name.");
+        }
+        return null;
+    }
+
     public void menu(Scanner scanner) {
         System.out.println(menuOptions);
         String userChoice = scanner.nextLine().toUpperCase();
 
         while (!userChoice.equals("QUIT")) {
-            if (userChoice.contains("NEW LEAD")) {  //works
+            if (userChoice.contains("NEW SALESREP")) {
+                createSalesRep(scanner);
+                System.out.println(menuOptions);
+                userChoice = scanner.nextLine().toUpperCase();
+            } else if (userChoice.contains("NEW LEAD")) {
                 createLead(scanner);
                 System.out.println(menuOptions);
                 userChoice = scanner.nextLine().toUpperCase();
-            } else if (userChoice.contains("SHOW LEADS")) {  //works
+            } else if (userChoice.contains("SHOW LEADS")) {
                 showLeads();
                 System.out.println(menuOptions);
                 userChoice = scanner.nextLine().toUpperCase();
-            } else if (userChoice.contains("LOOKUP LEAD")) {  //works
+            } else if (userChoice.contains("LOOKUP LEAD")) {
                 lookupLead(userChoice);
                 System.out.println(menuOptions);
                 userChoice = scanner.nextLine().toUpperCase();
@@ -230,7 +279,8 @@ public class CRM {
             Contact newContact = createContact(leadList.get(leadId));
             Product productType = typeOfProduct(scanner);
             int productQuantity = quantityOfProduct(scanner);
-            Opportunity newOpportunity = createOpportunity(productType, productQuantity, newContact);
+            SalesRep salesRep = chooseSalesRep(scanner);
+            Opportunity newOpportunity = createOpportunity(productType, productQuantity, newContact, salesRep);
             createAccount(scanner, newContact, newOpportunity);
             System.out.println("New Opportunity created:\n" + newOpportunity.toString());
         } catch (Exception e) {
@@ -283,21 +333,9 @@ public class CRM {
                 return Industry.OTHER;
         }
     }
-//    public Opportunity createOpportunity(Product productType, int productQuantity, Contact newContact){
-//        Opportunity newOpportunity = new Opportunity();
-//        try {
-//            newOpportunity.setProduct(productType);
-//            newOpportunity.setQuantity(productQuantity);
-//            newOpportunity.setDecisionMaker(newContact);
-//            opportunityList.put(newOpportunity.getId(), newOpportunity);
-//        }catch(Exception e){
-//            System.err.println("\n\n Opportunity not created\n\n");
-//        }
-//        return newOpportunity;
-//    }
 
-    public Opportunity createOpportunity(Product productType, int productQuantity, Contact newContact){
-        Opportunity newOpportunity = new Opportunity(productType, productQuantity, newContact);
+    public Opportunity createOpportunity(Product productType, int productQuantity, Contact newContact, SalesRep salesRep){
+        Opportunity newOpportunity = new Opportunity(productType, productQuantity, newContact, salesRep);
         opportunityList.put(newOpportunity.getId(), newOpportunity);
         return newOpportunity;
     }
