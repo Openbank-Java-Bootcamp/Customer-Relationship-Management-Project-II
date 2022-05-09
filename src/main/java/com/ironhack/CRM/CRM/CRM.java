@@ -6,7 +6,6 @@ import com.ironhack.CRM.enums.Industry;
 import com.ironhack.CRM.enums.Product;
 import com.ironhack.CRM.enums.Status;
 import com.ironhack.CRM.models.*;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -77,6 +76,14 @@ public class CRM {
             throw new IllegalArgumentException("Invalid input");
         }
     }
+    public void verifySalesRep(String salesId) {
+        String regx = "[0-9]+"; //Only numbers?
+        Pattern pattern = Pattern.compile(regx,Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(salesId);
+        if(!matcher.find()) {
+            throw new IllegalArgumentException("Enter a valid number");
+        }
+    }
 
     public void createLead(Scanner scanner) {
         System.out.println("\nPlease provide the following information to create a Lead:");
@@ -85,6 +92,7 @@ public class CRM {
         String leadEmail = null;
         String leadCompany = null;
         SalesRep salesRep = null;
+
         while (leadName == null) {
             try {
                 System.out.print("Name: ");
@@ -133,6 +141,17 @@ public class CRM {
                 System.err.print("Invalid Sales Rep id.");
             }
         }
+        //SalesRep part
+//        while (salesRep == null) {
+//            try {
+//                System.out.print("Sales Id: ");
+//                salesRep = scanner.nextLine();
+//                verifySalesRep(salesRep);
+//            } catch (IllegalArgumentException e) {
+//                salesRep = null;
+//                System.err.println("Only numbers allowed");
+//            }
+//        }
         Lead newLead = new Lead(leadName, leadPhoneAsInt, leadEmail, leadCompany, salesRep);
         leadList.put(newLead.getId(), newLead);
         System.out.println("\n\nLead created: ");
@@ -274,19 +293,75 @@ public class CRM {
     }
 
 
-    public void convertLead(Scanner scanner, String leadId){
+    public void convertLead(Scanner scanner, String leadId) {
         try {
-            Contact newContact = createContact(leadList.get(leadId));
+            Contact contact = typeOfContact(scanner, leadList.get(leadId));
             Product productType = typeOfProduct(scanner);
             int productQuantity = quantityOfProduct(scanner);
             SalesRep salesRep = chooseSalesRep(scanner);
-            Opportunity newOpportunity = createOpportunity(productType, productQuantity, newContact, salesRep);
-            createAccount(scanner, newContact, newOpportunity);
+            //falta preguntar que SalesRep asignar a Opportunity
+            Opportunity newOpportunity = createOpportunity(productType, productQuantity, contact, salesRep);
             System.out.println("New Opportunity created:\n" + newOpportunity.toString());
+            Account account = typeOfAccount(scanner, contact, newOpportunity);
         } catch (Exception e) {
             System.err.println("Invalid lead, choose other command");
         }
     }
+
+    public Contact typeOfContact(Scanner scanner, Lead lead) {
+        System.out.println("Would you like to create a New Contact?" +
+                "\nType (Y) - for yes" +
+                "\nType (N) - for no"
+        );
+        Contact contact;
+        String contactChoice = scanner.nextLine().toUpperCase();
+        while (!contactChoice.equals("Y") || !contactChoice.equals("N")) {
+            System.err.println("Invalid Entry");
+            System.out.println("Type (Y) - for yes" +
+                    "\nType (N) - for no");
+            contactChoice = scanner.nextLine().toUpperCase();
+        }
+        if (contactChoice.equals("Y")) {
+            return contact = createContact(lead);
+        } else {
+            System.out.println("Please type \"look up\" and contact's id which you want to assign");
+            String userChoice = scanner.nextLine();
+            while (!userChoice.contains("LOOKUP CONTACT")) {
+                System.err.println("Invalid Entry");
+                System.out.println("Please type \"look up\" and contact's id which you want to assign");
+                userChoice = scanner.nextLine().toUpperCase();
+            }
+            return contact = lookupContact(userChoice);
+        }
+    }
+
+    public Account typeOfAccount(Scanner scanner, Contact contact, Opportunity opportunity) {
+        System.out.println("Would you like to create a New Account?" +
+                "\nType (Y) - for yes" +
+                "\nType (N) - for no"
+        );
+        Account account;
+        String accountChoice = scanner.nextLine().toUpperCase();
+        while (!accountChoice.equals("Y") || !accountChoice.equals("N")) {
+            System.err.println("Invalid Entry");
+            System.out.println("Type (Y) - for yes" +
+                    "\nType (N) - for no");
+            accountChoice = scanner.nextLine().toUpperCase();
+        }
+        if (accountChoice.equals("Y")) {
+            return createAccount(scanner, contact, opportunity);
+        } else {
+            System.out.println("Please type \"look up\" and account's id which you want to assign");
+            String userChoice = scanner.nextLine();
+            while (!userChoice.contains("LOOKUP ACCOUNT")) {
+                System.err.println("Invalid Entry");
+                System.out.println("Please type \"look up\" and account's id which you want to assign");
+                userChoice = scanner.nextLine().toUpperCase();
+            }
+            return account = lookupAccount(userChoice);
+        }
+    }
+
 
     public Product typeOfProduct(Scanner scanner){
         System.out.println(
@@ -305,6 +380,7 @@ public class CRM {
                 return Product.BOX;
         }
     }
+
     public int quantityOfProduct(Scanner scanner) {
         System.out.print("Product quantity: ");
         int quantity = verifyIntInput(scanner, 1, Integer.MAX_VALUE);
@@ -334,13 +410,14 @@ public class CRM {
         }
     }
 
+
     public Opportunity createOpportunity(Product productType, int productQuantity, Contact newContact, SalesRep salesRep){
         Opportunity newOpportunity = new Opportunity(productType, productQuantity, newContact, salesRep);
         opportunityList.put(newOpportunity.getId(), newOpportunity);
         return newOpportunity;
     }
 
-    public void createAccount(Scanner scanner, Contact newContact, Opportunity newOpportunity) throws IllegalArgumentException {
+    public Account createAccount(Scanner scanner, Contact newContact, Opportunity newOpportunity) throws IllegalArgumentException {
         if(!contactList.containsKey(newContact.getId())){
             throw new IllegalArgumentException("The Contact is not on the contacts list");
         } else if (!opportunityList.containsKey(newOpportunity.getId())){
@@ -377,6 +454,7 @@ public class CRM {
         newOpportunityList.put(newOpportunity.getId(), newOpportunity);
         Account newAccount = new Account(industryType, employeeCount, city, country, newContactList, newOpportunityList);
         accountList.put(newAccount.getId(),newAccount);
+        return newAccount;
     }
 
     public void verifyCityOrCountry(String name) {
