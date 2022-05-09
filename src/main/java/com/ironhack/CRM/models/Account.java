@@ -45,6 +45,14 @@ public class Account {
         this.opportunityList = opportunityList;
     }
 
+    public Account(Industry industry, int employeeCount, String city, String country) {
+        this.id = createID();
+        this.industry = industry;
+        this.employeeCount = employeeCount;
+        this.city = city;
+        this.country = country;
+    }
+
 
     //SETTERS
 
