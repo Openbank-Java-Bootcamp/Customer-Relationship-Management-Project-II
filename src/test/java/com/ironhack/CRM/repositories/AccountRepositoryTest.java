@@ -7,38 +7,52 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class AccountRepositoryTest {
 
     @Autowired
-    private AccountRepository testAccountRepository;
+    private AccountRepository accountRepository;
 
-    private Account account1;
-    private Account account2;
-    private Account account3;
-    private Account account4;
-    private Account account5;
-    private Account account6;
+    private List<Account> accounts;
 
 
     @BeforeEach
     void setUp() {
-        account1 = new Account(Industry.PRODUCE, 420, "Bilbao", "Spain");
-        account2 = new Account(Industry.MANUFACTURING, 245, "Valencia", "Spain");
-        account3 = new Account(Industry.ECOMMERCE, 60, "Salamanca", "Spain");
-        account4 = new Account(Industry.MEDICAL, 125, "Malaga", "Spain");
-        account5 = new Account(Industry.OTHER, 35, "Barcelona", "Spain");
-        account4 = new Account(Industry.MANUFACTURING, 315, "Madrid", "Spain");
+        accounts = accountRepository.saveAll(List.of(
+                new Account(Industry.PRODUCE, 420, "Bilbao", "Spain"),
+                new Account(Industry.MANUFACTURING, 245, "Valencia", "Spain"),
+                new Account(Industry.ECOMMERCE, 60, "Salamanca", "Spain"),
+                new Account(Industry.MEDICAL, 125, "Malaga", "Spain"),
+                new Account(Industry.OTHER, 35, "Barcelona", "Spain")
+        ));
+
     }
 
     @AfterEach
     void tearDown() {
-        testAccountRepository.deleteAll();
+        accountRepository.deleteAll();
     }
 
     @Test
-    public void testFindMeanEmployeeCount() {
-        assertEquals(240.0, testAccountRepository.findMeanEmployeeCount());
+    public void findMeanEmployeeCount() {
+        assertEquals(177, accountRepository.findMeanEmployeeCount());
+    }
+
+    @Test
+    public void findMedianEmployeeCount() {
+        assertEquals(125, accountRepository.findMedianEmployeeCount());
+    }
+
+    @Test
+    public void findMaxEmployeeCount() {
+        assertEquals(420, accountRepository.findMaxEmployeeCount());
+    }
+
+    @Test
+    public void findMinEmployeeCount() {
+        assertEquals(35, accountRepository.findMinEmployeeCount());
     }
 }

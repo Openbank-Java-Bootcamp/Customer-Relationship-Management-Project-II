@@ -24,6 +24,7 @@ public class CRM {
 
 
     private static String menuOptions = "\n\nEnter " + ConsoleColors.BLUE + "NEW SALESREP" + ConsoleColors.RESET + " to create a new Sales Rep.\n" +
+            "Enter " + ConsoleColors.BLUE + "SHOW SALESREPS" + ConsoleColors.RESET + " to see all Sales Reps.\n" +
             "Enter " + ConsoleColors.BLUE + "NEW LEAD" + ConsoleColors.RESET + " to create a new Lead.\n" +
             "Enter " + ConsoleColors.BLUE + "SHOW LEADS" + ConsoleColors.RESET + " to see all Leads.\n" +
             "Enter " + ConsoleColors.BLUE + "LOOKUP LEAD <id>" + ConsoleColors.RESET + " to see a particular Lead.\n" +
@@ -153,6 +154,7 @@ public class CRM {
 //            }
 //        }
         Lead newLead = new Lead(leadName, leadPhoneAsInt, leadEmail, leadCompany, salesRep);
+        salesRep.addLeadToList(newLead);
         leadList.put(newLead.getId(), newLead);
         System.out.println("\n\nLead created: ");
         System.out.println(newLead.toString());
@@ -235,7 +237,12 @@ public class CRM {
                 createSalesRep(scanner);
                 System.out.println(menuOptions);
                 userChoice = scanner.nextLine().toUpperCase();
-            } else if (userChoice.contains("NEW LEAD")) {
+            } else if (userChoice.contains("SHOW SALESREPS")) {
+                showSalesReps();
+                System.out.println(menuOptions);
+                userChoice = scanner.nextLine().toUpperCase();
+            }
+            else if (userChoice.contains("NEW LEAD")) {
                 createLead(scanner);
                 System.out.println(menuOptions);
                 userChoice = scanner.nextLine().toUpperCase();
