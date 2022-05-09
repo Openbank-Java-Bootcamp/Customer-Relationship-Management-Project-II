@@ -3,6 +3,7 @@ package com.ironhack.CRM.models;
 import com.ironhack.CRM.enums.Industry;
 
 import javax.persistence.*;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 @Entity
@@ -35,8 +36,17 @@ public class Account {
     public Account() {
     }
 
-    public Account(Industry industry, int employeeCount, String city, String country, Map<String, Contact> contactList, Map<String, Opportunity> opportunityList) {
+    public Account(Industry industry, int employeeCount, String city, String country) {
         this.id = createID();
+        this.industry = industry;
+        this.employeeCount = employeeCount;
+        this.city = city;
+        this.country = country;
+        this.contactList = new HashMap<>();
+        this.opportunityList = new HashMap<>();
+    }
+
+    public Account(Industry industry, int employeeCount, String city, String country, Map<String, Contact> contactList, Map<String, Opportunity> opportunityList) {
         this.industry = industry;
         this.employeeCount = employeeCount;
         this.city = city;
@@ -44,15 +54,6 @@ public class Account {
         this.contactList = contactList;
         this.opportunityList = opportunityList;
     }
-
-    public Account(Industry industry, int employeeCount, String city, String country) {
-        this.id = createID();
-        this.industry = industry;
-        this.employeeCount = employeeCount;
-        this.city = city;
-        this.country = country;
-    }
-
 
     //SETTERS
 

@@ -1,7 +1,9 @@
 package com.ironhack.CRM.models;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Entity
@@ -30,13 +32,8 @@ public class SalesRep {
     public SalesRep(String name) {
         this.id = createID();
         this.name = name;
-    }
-
-    public SalesRep(String name, List<Lead> leadList, List<Opportunity> opportunityList) {
-        this.id = createID();
-        this.name = name;
-        this.leadList = leadList;
-        this.opportunityList = opportunityList;
+        this.leadList = new ArrayList<>();
+        this.opportunityList = new ArrayList<>();
     }
 
 
@@ -79,8 +76,13 @@ public class SalesRep {
         return String.valueOf(salesRepIdCounter.getAndIncrement() + 1);
     }
 
-    //EQUALS, HASHCODE & ToString
+    public void addLeadToList(Lead lead) throws IllegalArgumentException{
+        if (lead == null) {
+            throw new IllegalArgumentException("Invalid Lead"); }
+        this.leadList.add(lead);
+    }
 
+    //EQUALS, HASHCODE & ToString
 
     @Override
     public boolean equals(Object o) {
@@ -107,9 +109,9 @@ public class SalesRep {
     @Override
     public String toString() {
         return "\nSalesRep " + id +
-                "\nName:  " + name +
-                "\nLeads:  " + leadList +
-                "\nOpportunities:  " + opportunityList
+                "\nName:  " + name
+               // "\nLeads:  " + leadList +
+                //"\nOpportunities:  " + opportunityList
                 ;
     }
 }
