@@ -7,6 +7,7 @@ import com.ironhack.CRM.enums.Status;
 import com.ironhack.CRM.models.Contact;
 import com.ironhack.CRM.models.Lead;
 import com.ironhack.CRM.models.Opportunity;
+import com.ironhack.CRM.models.SalesRep;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

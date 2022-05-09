@@ -7,5 +7,18 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AccountRepository extends JpaRepository<Account, String> {
 
+    //By EmployeeCount States:
+    //“Mean EmployeeCount”
+    double findMeanEmployeeCount();
+
+    //“Median EmployeeCount”
+    int findMedianEmployeeCount();
+
+    //“Max EmployeeCount”
+    int findMaxEmployeeCount();
+
+    //“Min EmployeeCount”
+    int findMinEmployeeCount();
+
 
 }
