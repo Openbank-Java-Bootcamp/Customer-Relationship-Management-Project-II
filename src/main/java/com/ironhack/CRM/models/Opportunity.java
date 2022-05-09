@@ -131,4 +131,15 @@ public class Opportunity {
     }
 
 
+    @Override
+    public String toString() {
+        return "Opportunity " + id +
+                "\nProduct:  " + product +
+                "\nQuantity:  " + quantity +
+                "\nStatus:  " + status +
+                "\n\nDecision Maker:  " + decisionMaker +
+                "\n\nSales Rep:  " + salesRep +
+                "\n\nAccount:  " + account
+                ;
+    }
 }

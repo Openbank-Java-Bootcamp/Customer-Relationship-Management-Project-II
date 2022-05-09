@@ -27,6 +27,11 @@ public class SalesRep {
     public SalesRep() {
     }
 
+    public SalesRep(String name) {
+        this.id = createID();
+        this.name = name;
+    }
+
     public SalesRep(String name, List<Lead> leadList, List<Opportunity> opportunityList) {
         this.id = createID();
         this.name = name;
@@ -101,11 +106,10 @@ public class SalesRep {
 
     @Override
     public String toString() {
-        return "SalesRep{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", leadList=" + leadList +
-                ", opportunityList=" + opportunityList +
-                '}';
+        return "\nSalesRep " + id +
+                "\nName:  " + name +
+                "\nLeads:  " + leadList +
+                "\nOpportunities:  " + opportunityList
+                ;
     }
 }
