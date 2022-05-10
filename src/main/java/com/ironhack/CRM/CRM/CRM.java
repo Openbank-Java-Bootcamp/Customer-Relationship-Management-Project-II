@@ -214,16 +214,20 @@ public class CRM {
     }
 
     public SalesRep createSalesRep(Scanner scanner) {
-        try {
-            System.out.print("\nSales Rep's name:  ");
-            String name = scanner.nextLine();
-            verifyName(name);
-            SalesRep newSalesRep = new SalesRep(name);
-            salesRepList.put(newSalesRep.getId(), newSalesRep);
-            System.out.println("\n\nSalesRep created:\n"+ newSalesRep.toString());
-            return newSalesRep;
-        } catch (IllegalArgumentException e) {
-            System.err.println("Invalid name.");
+        String name = null;
+        while (name == null) {
+            try {
+                System.out.print("\nSales Rep's name:  ");
+                name = scanner.nextLine();
+                verifyName(name);
+                SalesRep newSalesRep = new SalesRep(name);
+                salesRepList.put(newSalesRep.getId(), newSalesRep);
+                System.out.println("\n\nSalesRep created:\n" + newSalesRep.toString());
+                return newSalesRep;
+            } catch (IllegalArgumentException e) {
+                name = null;
+                System.err.println("Invalid name.");
+            }
         }
         return null;
     }
@@ -349,7 +353,7 @@ public class CRM {
         );
         Account account;
         String accountChoice = scanner.nextLine().toUpperCase();
-        while (!accountChoice.equals("Y") || !accountChoice.equals("N")) {
+        while (!accountChoice.equals("Y") && !accountChoice.equals("N")) {
             System.err.println("Invalid Entry");
             System.out.println("Type (Y) - for yes" +
                     "\nType (N) - for no");
