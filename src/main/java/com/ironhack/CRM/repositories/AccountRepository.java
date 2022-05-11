@@ -11,11 +11,11 @@ public interface AccountRepository extends JpaRepository<Account, String> {
 
     //By EmployeeCount States:
     //“Mean EmployeeCount”
-    @Query(value = "SELECT MEAN(employee_count) FROM employee", nativeQuery = true)
+    @Query(value = "SELECT AVG(employee_count) FROM employee", nativeQuery = true)
     double findMeanEmployeeCount();
 
     //“Median EmployeeCount”
-    @Query(value = "SELECT MEDIAN(employee_count) FROM employee", nativeQuery = true)
+    @Query(value = "SELECT PERCENTILE_CONT(0.5) FROM employee", nativeQuery = true)
     int findMedianEmployeeCount();
 
     //“Max EmployeeCount”
