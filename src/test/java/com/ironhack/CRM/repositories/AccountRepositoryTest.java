@@ -6,11 +6,13 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+@SpringBootTest
 class AccountRepositoryTest {
 
     @Autowired
@@ -21,13 +23,19 @@ class AccountRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        accounts = accountRepository.saveAll(List.of(
-                new Account(Industry.PRODUCE, 420, "Bilbao", "Spain"),
-                new Account(Industry.MANUFACTURING, 245, "Valencia", "Spain"),
-                new Account(Industry.ECOMMERCE, 60, "Salamanca", "Spain"),
-                new Account(Industry.MEDICAL, 125, "Malaga", "Spain"),
-                new Account(Industry.OTHER, 35, "Barcelona", "Spain")
-        ));
+//        accounts = accountRepository.saveAll(List.of(
+//                new Account(Industry.PRODUCE, 420, "Bilbao", "Spain"),
+//                new Account(Industry.MANUFACTURING, 245, "Valencia", "Spain"),
+//                new Account(Industry.ECOMMERCE, 60, "Salamanca", "Spain"),
+//                new Account(Industry.MEDICAL, 125, "Malaga", "Spain"),
+//                new Account(Industry.OTHER, 35, "Barcelona", "Spain")
+//        ));
+        Account account1 = new Account(Industry.PRODUCE, 420, "Bilbao", "Spain");
+        Account account2 = new Account(Industry.MANUFACTURING, 245, "Valencia", "Spain");
+        Account account3 = new Account(Industry.ECOMMERCE, 60, "Salamanca", "Spain");
+        Account account4 = new Account(Industry.MEDICAL, 125, "Malaga", "Spain");
+        Account account5 = new Account(Industry.OTHER, 35, "Barcelona", "Spain");
+        accountRepository.saveAll(List.of(account1, account2, account3, account4, account5));
 
     }
 

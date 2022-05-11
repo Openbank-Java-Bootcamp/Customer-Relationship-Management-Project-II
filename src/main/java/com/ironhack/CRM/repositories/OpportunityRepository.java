@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Repository
@@ -12,20 +13,20 @@ public interface OpportunityRepository extends JpaRepository<Opportunity, String
 
     //By Product:
     //“Report Opportunity by the product”
-    @Query(value = "SELECT COUNT(*) FROM opportunity GROUP BY product", nativeQuery = true)
-    List<Opportunity> findCountGroupByProduct();
+    @Query(value = "SELECT product, COUNT(*) FROM opportunity GROUP BY product", nativeQuery = true)
+    List<Object[]> findCountGroupByProduct();
 
     //“Report CLOSED-WON by the product”
-    @Query(value = "SELECT COUNT(*) FROM opportunity WHERE status = 'CLOSED_WON' GROUP BY product", nativeQuery = true)
-    List<Opportunity> findCountWithStatusWonGroupByProduct();
+    @Query(value = "SELECT product, COUNT(*) FROM opportunity WHERE status = 'CLOSED_WON' GROUP BY product", nativeQuery = true)
+    List<Object[]> findCountWithStatusWonGroupByProduct();
 
     // “Report CLOSED-LOST by the product”
-    @Query(value = "SELECT COUNT(*) FROM opportunity WHERE status = 'CLOSED_LOST' GROUP BY product", nativeQuery = true)
-    List<Opportunity> findCountWithStatusLostGroupByProduct();
+    @Query(value = "SELECT product, COUNT(*) FROM opportunity WHERE status = 'CLOSED_LOST' GROUP BY product", nativeQuery = true)
+    List<Object[]> findCountWithStatusLostGroupByProduct();
 
     //“Report OPEN by the product”
-    @Query(value = "SELECT COUNT(*) FROM opportunity WHERE status = 'OPEN' GROUP BY product", nativeQuery = true)
-    List<Opportunity> findCountWithStatusOpenGroupByProduct();
+    @Query(value = "SELECT product, COUNT(*) FROM opportunity WHERE status = 'OPEN' GROUP BY product", nativeQuery = true)
+    List<Object[]> findCountWithStatusOpenGroupByProduct();
 
     //By country:
     //Report Opportunity by country

@@ -2,12 +2,15 @@ package com.ironhack.CRM.repositories;
 
 import com.ironhack.CRM.enums.Industry;
 import com.ironhack.CRM.enums.Product;
+import com.ironhack.CRM.enums.Status;
 import com.ironhack.CRM.models.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,16 +48,16 @@ class OpportunityRepositoryTest {
         ));
 
         leads = leadRepository.saveAll(List.of(
-                new Lead("Cris", 121212121, "lll@lll.lt", "Jasons", salesReps.get(1)),
-                new Lead("Jon", 111111111, "aaa@aaa.aa", "Jacks", salesReps.get(1)),
-                new Lead("Sandra", 222222222, "sss@sss.ss", "Thompson", salesReps.get(2)),
-                new Lead("Tom", 333333333, "ddd@ddd.dd", "Son", salesReps.get(1)),
-                new Lead("Thomas", 444444444, "fff@fff.ff", "Sons", salesReps.get(3)),
-                new Lead("Cristina", 555555555, "ggg@ggg.gg", "Jasons", salesReps.get(1)),
-                new Lead("Pedro", 666666666, "hhh@hhh.hh", "Pros", salesReps.get(2)),
-                new Lead("Cristina", 777777777, "jjj@jjj.jj", "Pross", salesReps.get(2)),
-                new Lead("Chris", 888888888, "eee@eee.ee", "Cross", salesReps.get(1)),
-                new Lead("Germis", 999999999, "rrr@rrr.rr", "CrossCountry", salesReps.get(3))
+                new Lead("Cris", 121212121, "lll@lll.lt", "Jasons", salesReps.get(0)),
+                new Lead("Jon", 111111111, "aaa@aaa.aa", "Jacks", salesReps.get(0)),
+                new Lead("Sandra", 222222222, "sss@sss.ss", "Thompson", salesReps.get(1)),
+                new Lead("Tom", 333333333, "ddd@ddd.dd", "Son", salesReps.get(0)),
+                new Lead("Thomas", 444444444, "fff@fff.ff", "Sons", salesReps.get(2)),
+                new Lead("Cristina", 555555555, "ggg@ggg.gg", "Jasons", salesReps.get(0)),
+                new Lead("Pedro", 666666666, "hhh@hhh.hh", "Pros", salesReps.get(1)),
+                new Lead("Cristina", 777777777, "jjj@jjj.jj", "Pross", salesReps.get(1)),
+                new Lead("Chris", 888888888, "eee@eee.ee", "Cross", salesReps.get(0)),
+                new Lead("Germis", 999999999, "rrr@rrr.rr", "CrossCountry", salesReps.get(2))
         ));
 
         contacts = contactRepository.saveAll(List.of(
@@ -71,30 +74,30 @@ class OpportunityRepositoryTest {
         ));
 
         opportunities = opportunityRepository.saveAll(List.of(
-                new Opportunity(Product.BOX, 10, contacts.get(1), salesReps.get(1)),
-                new Opportunity(Product.FLATBED, 1, contacts.get(2), salesReps.get(1)),
-                new Opportunity(Product.BOX, 15, contacts.get(3), salesReps.get(2)),
-                new Opportunity(Product.HYBRID, 2, contacts.get(4), salesReps.get(2)),
-                new Opportunity(Product.BOX, 5, contacts.get(5), salesReps.get(1)),
-                new Opportunity(Product.BOX, 50, contacts.get(6), salesReps.get(1)),
-                new Opportunity(Product.BOX, 4, contacts.get(7), salesReps.get(2)),
+                new Opportunity(Product.BOX, 10, contacts.get(0), salesReps.get(0)),
+                new Opportunity(Product.FLATBED, 1, contacts.get(1), salesReps.get(0)),
+                new Opportunity(Product.BOX, 15, contacts.get(2), salesReps.get(2)),
+                new Opportunity(Product.HYBRID, 2, contacts.get(3), salesReps.get(1)),
+                new Opportunity(Product.BOX, 5, contacts.get(4), salesReps.get(0)),
+                new Opportunity(Product.BOX, 50, contacts.get(5), salesReps.get(0)),
+                new Opportunity(Product.BOX, 4, contacts.get(6), salesReps.get(1)),
+                new Opportunity(Product.BOX, 4, contacts.get(7), salesReps.get(0)),
                 new Opportunity(Product.BOX, 4, contacts.get(8), salesReps.get(1)),
-                new Opportunity(Product.BOX, 4, contacts.get(9), salesReps.get(2)),
-                new Opportunity(Product.BOX, 4, contacts.get(10), salesReps.get(3))
+                new Opportunity(Product.BOX, 4, contacts.get(9), salesReps.get(2))
         ));
 
-        accounts = accountRepository.saveAll(List.of(
-                new Account(Industry.ECOMMERCE, 150, "Valencia", "Spain"),
-                new Account(Industry.MEDICAL, 15, "Madrid", "Spain"),
-                new Account(Industry.MANUFACTURING, 1, "London", "Uk"),
-                new Account(Industry.MANUFACTURING, 10, "Madrid", "Spain"),
-                new Account(Industry.MEDICAL, 25, "Madrid", "Spain"),
-                new Account(Industry.OTHER, 20, "London", "Uk"),
-                new Account(Industry.OTHER, 10, "London", "Uk"),
-                new Account(Industry.MEDICAL, 21, "Madrid", "Spain"),
-                new Account(Industry.ECOMMERCE, 10, "Barcelona", "Spain"),
-                new Account(Industry.MANUFACTURING, 5, "London", "Uk")
-        ));
+//        accounts = accountRepository.saveAll(List.of(
+//                new Account(Industry.ECOMMERCE, 150, "Valencia", "Spain"),
+//                new Account(Industry.MEDICAL, 15, "Madrid", "Spain"),
+//                new Account(Industry.MANUFACTURING, 1, "London", "Uk"),
+//                new Account(Industry.MANUFACTURING, 10, "Madrid", "Spain"),
+//                new Account(Industry.MEDICAL, 25, "Madrid", "Spain"),
+//                new Account(Industry.OTHER, 20, "London", "Uk"),
+//                new Account(Industry.OTHER, 10, "London", "Uk"),
+//                new Account(Industry.MEDICAL, 21, "Madrid", "Spain"),
+//                new Account(Industry.ECOMMERCE, 10, "Barcelona", "Spain"),
+//                new Account(Industry.MANUFACTURING, 5, "London", "Uk")
+//        ));
     }
 
     @AfterEach
@@ -104,5 +107,56 @@ class OpportunityRepositoryTest {
         contactRepository.deleteAll();
         opportunityRepository.deleteAll();
         accountRepository.deleteAll();
+    }
+
+    @Test
+    public void findCountGroupByProduct() {
+        assertEquals(3, opportunityRepository.findCountGroupByProduct().size());
+        assertEquals(BigInteger.valueOf(8), opportunityRepository.findCountGroupByProduct().get(0)[1]);//# of BOX
+        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountGroupByProduct().get(1)[1]);
+        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountGroupByProduct().get(2)[1]);
+    }
+
+    @Test
+    public void findCountWithStatusWonGroupByProduct() {
+        Opportunity opportunity1 = opportunities.get(0);
+        Opportunity opportunity2 = opportunities.get(1);
+        Opportunity opportunity3 = opportunities.get(2);
+        opportunity1.setStatus(Status.CLOSED_WON);
+        opportunity2.setStatus(Status.CLOSED_WON);
+        opportunity3.setStatus(Status.CLOSED_WON);
+        opportunityRepository.saveAll(List.of(opportunity1, opportunity2, opportunity3));
+        assertEquals(2, opportunityRepository.findCountWithStatusWonGroupByProduct().size());//only two types of products have lost-won status
+        assertEquals(BigInteger.valueOf(2), opportunityRepository.findCountWithStatusWonGroupByProduct().get(0)[1]);
+        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusWonGroupByProduct().get(1)[1]);
+        //assertEquals(0, opportunityRepository.findCountWithStatusWonGroupByProduct().get(2)[1]);
+    }
+
+    @Test
+    public void findCountWithStatusLostGroupByProduct() {
+        Opportunity opportunity1 = opportunities.get(0);
+        Opportunity opportunity2 = opportunities.get(1);
+        Opportunity opportunity4 = opportunities.get(3);
+        opportunity1.setStatus(Status.CLOSED_LOST);
+        opportunity2.setStatus(Status.CLOSED_LOST);
+        opportunity4.setStatus(Status.CLOSED_LOST);
+        opportunityRepository.saveAll(List.of(opportunity1, opportunity2, opportunity4));
+        assertEquals(3, opportunityRepository.findCountWithStatusLostGroupByProduct().size());
+        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusLostGroupByProduct().get(0)[1]);
+        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusLostGroupByProduct().get(1)[1]);
+        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusLostGroupByProduct().get(2)[1]);
+    }
+
+    @Test
+    public void findCountWithStatusOpenGroupByProduct() {
+        Opportunity opportunity10 = opportunities.get(9);
+        Opportunity opportunity9 = opportunities.get(8);
+        opportunity10.setStatus(Status.CLOSED_LOST);
+        opportunity9.setStatus(Status.CLOSED_LOST);
+        opportunityRepository.saveAll(List.of(opportunity10, opportunity9));
+        assertEquals(3, opportunityRepository.findCountWithStatusOpenGroupByProduct().size());
+        assertEquals(BigInteger.valueOf(6), opportunityRepository.findCountWithStatusOpenGroupByProduct().get(0)[1]);
+        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusOpenGroupByProduct().get(1)[1]);
+        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusOpenGroupByProduct().get(2)[1]);
     }
 }
