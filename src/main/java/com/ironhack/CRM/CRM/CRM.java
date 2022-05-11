@@ -165,7 +165,7 @@ public class CRM {
         System.out.print("Sales Rep id:  ");
         String salesRepId = scanner.nextLine();
         if (!salesRepList.containsKey(salesRepId)) {
-            throw new NoSuchElementException("Invalid Sales Rep Id");
+            throw new NoSuchElementException("Invalid Sales Rep Id. Please enter a valid Id: ");
         }
         SalesRep salesRep = salesRepList.get(salesRepId);
         return salesRep;
@@ -326,7 +326,7 @@ public class CRM {
         );
         Contact contact;
         String contactChoice = scanner.nextLine().toUpperCase();
-        while (!contactChoice.equals("Y") || !contactChoice.equals("N")) {
+        while (!contactChoice.equals("Y") && !contactChoice.equals("N")) {
             System.err.println("Invalid Entry");
             System.out.println("Type (Y) - for yes" +
                     "\nType (N) - for no");
