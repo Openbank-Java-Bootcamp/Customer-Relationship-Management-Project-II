@@ -353,7 +353,7 @@ public class CRM {
         );
         Account account;
         String accountChoice = scanner.nextLine().toUpperCase();
-        while (!accountChoice.equals("Y") || !accountChoice.equals("N")) {
+        while (!accountChoice.equals("Y") && !accountChoice.equals("N")) {
             System.err.println("Invalid Entry");
             System.out.println("Type (Y) - for yes" +
                     "\nType (N) - for no");
