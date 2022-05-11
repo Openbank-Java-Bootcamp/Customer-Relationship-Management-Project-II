@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 
 @Entity
-@Table(name = "lead")
+@Table(name = "_lead")
 public class Lead {
     @Id
     private String id;
