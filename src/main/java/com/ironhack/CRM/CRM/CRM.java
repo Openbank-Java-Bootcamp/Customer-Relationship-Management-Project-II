@@ -6,12 +6,23 @@ import com.ironhack.CRM.enums.Industry;
 import com.ironhack.CRM.enums.Product;
 import com.ironhack.CRM.enums.Status;
 import com.ironhack.CRM.models.*;
+import com.ironhack.CRM.repositories.AccountRepository;
+import com.ironhack.CRM.repositories.LeadRepository;
+import com.ironhack.CRM.repositories.OpportunityRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CRM {
+
+    @Autowired
+    private LeadRepository leadRepository;
+    @Autowired
+    private OpportunityRepository opportunityRepository;
+    @Autowired
+    private AccountRepository accountRepository;
 
 
 
@@ -36,6 +47,28 @@ public class CRM {
             "Enter " + ConsoleColors.BLUE + "CLOSE-WON <id>" + ConsoleColors.RESET + " to close an won Opportunity.\n" +
             "Enter " + ConsoleColors.BLUE + "CLOSE-LOST <id>" + ConsoleColors.RESET + " to close a lost Opportunity.\n" +
             "Enter " + ConsoleColors.RED + "EXIT" + ConsoleColors.RESET + " to exit.\n";
+
+
+    private List<String> bySalesRep = List.of("(1) Report Lead by SalesRep", "(2) Report Opportunity by SalesRep", "(3) Report CLOSED-WON by SalesRep", "(4) Report CLOSED-LOST by SalesRep", "(5) Report OPEN by SalesRep");
+    private List<String> byProduct = List.of("(1) Report Opportunity by the product", "(2) Report CLOSED-WON by the product", "(3) Report CLOSED-LOST by the product", "(4) Report OPEN by the product");
+    private List<String> byCountry = List.of("(1) Report Opportunity by Country", "(2) Report CLOSED-WON by Country", "(3) Report CLOSED-LOST by Country", "(4) Report OPEN by Country");
+    private List<String> byCity = List.of("(1) Report Opportunity by City", "(2) Report CLOSED-WON by City", "(3) Report CLOSED-LOST by City", "(4) Report OPEN by City");
+    private List<String> byIndustry = List.of("(1) Report Opportunity by Industry", "(2) Report CLOSED-WON by Industry", "(3) Report CLOSED-LOST by Industry", "(4) Report OPEN by Industry");
+    private List<String> byEmployeeCountStates = List.of("(1) Mean EmployeeCount", "(2) Median EmployeeCount", "(3) Max EmployeeCount", "(4) Min EmployeeCount");
+    private List<String> byQuantityStates = List.of("(1) Mean Quantity", "(2) Median Quantity", "(3) Max Quantity", "(4) Min Quantity");
+    private List<String> byOpportunityStates = List.of("(1) Mean Opps per Account", "(2) Median Opps per Account", "(3) Max Opps per Account", "(4) Min Opps per Account");
+
+    private String reports = "Choose a report by next options: " +
+            "\n (1) BY SALES REP " +
+            "\n (2) BY PRODUCT" +
+            "\n (3) BY COUNTRY" +
+            "\n (4) BY CITY" +
+            "\n (5) BY INDUSTRY" +
+            "\n (6) BY EMPLOYEE COUNT STATES" +
+            "\n (7) BY QUANTITY STATES" +
+            "\n (8) BY OPPORTUNITY STATES" +
+            "\n (9) BACK";
+
 
     public CRM() {
     }
@@ -291,6 +324,10 @@ public class CRM {
                 } catch (IllegalArgumentException e) {
                     System.err.println("Invalid Opportunity ID");
                 }
+                System.out.println(menuOptions);
+                userChoice = scanner.nextLine().toUpperCase();
+            }else if (userChoice.equals("REPORTS")){
+                chooseReportList(scanner);
                 System.out.println(menuOptions);
                 userChoice = scanner.nextLine().toUpperCase();
             } else if (userChoice.equals("EXIT")) {
@@ -579,5 +616,166 @@ public class CRM {
         return num;
     }
 
-
+    public void chooseReportList(Scanner scanner) {
+        System.out.println(reports);
+        int scannerNum;
+        int reportChoice = CRM.verifyIntInput(scanner, 1, 9);
+        switch (reportChoice) {
+            case 1:
+                for (String each : bySalesRep) {
+                    System.out.println(each);}
+                scannerNum = CRM.verifyIntInput(scanner, 1, 5);
+                switch (scannerNum){
+                    case 1:
+                        System.out.println(leadRepository.findCountGroupBySalesRep().toString());
+                        break;
+                    case 2:
+                        System.out.println(opportunityRepository.findCountGroupBySalesRep().toString());
+                        break;
+                    case 3:
+                        System.out.println(opportunityRepository.findCountWithStatusWonGroupBySalesRep().toString());
+                        break;
+                    case 4:
+                        System.out.println(opportunityRepository.findCountWithStatusLostGroupBySalesRep().toString());
+                        break;
+                    case 5:
+                        System.out.println(opportunityRepository.findCountWithStatusOpenGroupBySalesRep().toString());
+                        break;
+                }
+                break;
+            case 2:
+                for (String each : byProduct) {
+                    System.out.println(each);
+                }
+                scannerNum = CRM.verifyIntInput(scanner, 1, 4);
+                switch (scannerNum){
+                    case 1:
+                        System.out.println(opportunityRepository.findCountGroupByProduct().toString());
+                        break;
+                    case 2:
+                        System.out.println(opportunityRepository.findCountWithStatusWonGroupByProduct().toString());
+                        break;
+                    case 3:
+                        System.out.println(opportunityRepository.findCountWithStatusLostGroupByProduct().toString());
+                        break;
+                    case 4:
+                        System.out.println(opportunityRepository.findCountWithStatusOpenGroupByProduct().toString());
+                        break;
+                }
+            case 3:
+                for (String each : byCountry) {
+                    System.out.println(each);
+                }
+                scannerNum = CRM.verifyIntInput(scanner, 1, 4);
+                switch (scannerNum){
+                    case 1:
+                        System.out.println(opportunityRepository.findCountGroupByCountry().toString());
+                        break;
+                    case 2:
+                        System.out.println(opportunityRepository.findCountWithStatusWonGroupByCountry().toString());
+                        break;
+                    case 3:
+                        System.out.println(opportunityRepository.findCountWithStatusLostGroupByCountry().toString());
+                        break;
+                    case 4:
+                        System.out.println(opportunityRepository.findCountWithStatusOpenGroupByCountry().toString());
+                        break;
+                }
+            case 4:
+                for (String each : byCity) {
+                    System.out.println(each);
+                }
+                scannerNum = CRM.verifyIntInput(scanner, 1, 4);
+                switch (scannerNum){
+                    case 1:
+                        System.out.println(opportunityRepository.countOpportunitiesByCity("a").toString());
+                        break;
+                    case 2:
+                        System.out.println(opportunityRepository.countOpportunitiesByCityWithStatusCloseWon("b").toString());
+                        break;
+                    case 3:
+                        System.out.println(opportunityRepository.countOpportunitiesByCityWithStatusCloseLost("c").toString());
+                        break;
+                    case 4:
+                        System.out.println(opportunityRepository.countOpportunitiesByCityWithStatusOpen("d").toString());
+                        break;
+                }
+            case 5:
+                for (String each : byIndustry) {
+                    System.out.println(each);
+                }
+                scannerNum = CRM.verifyIntInput(scanner, 1, 4);
+                switch (scannerNum){
+                    case 1:
+                        System.out.println(opportunityRepository.findCountGroupByIndustry().toString());
+                        break;
+                    case 2:
+                        System.out.println(opportunityRepository.findCountWithStatusWonGroupByIndustry().toString());
+                        break;
+                    case 3:
+                        System.out.println(opportunityRepository.findCountWithStatusLostGroupByIndustry().toString());
+                        break;
+                    case 4:
+                        System.out.println(opportunityRepository.findCountWithStatusOpenGroupByIndustry().toString());
+                        break;
+                }
+            case 6:
+                for (String each : byEmployeeCountStates) {
+                    System.out.println(each);
+                }
+                scannerNum = CRM.verifyIntInput(scanner, 1, 4);
+                switch (scannerNum){
+                    case 1:
+                        System.out.println(accountRepository.findMeanEmployeeCount());
+                        break;
+                    case 2:
+                        System.out.println(accountRepository.findMedianEmployeeCount());
+                        break;
+                    case 3:
+                        System.out.println(accountRepository.findMaxEmployeeCount());
+                        break;
+                    case 4:
+                        System.out.println(accountRepository.findMinEmployeeCount());
+                        break;
+                }
+            case 7:
+                for (String each : byQuantityStates) {
+                    System.out.println(each);
+                }
+                scannerNum = CRM.verifyIntInput(scanner, 1, 4);
+                switch (scannerNum){
+                    case 1:
+                        System.out.println("opportunityRepository.1().toString()");
+                        break;
+                    case 2:
+                        System.out.println("opportunityRepository.2().toString()");
+                        break;
+                    case 3:
+                        System.out.println("opportunityRepository.3().toString()");
+                        break;
+                    case 4:
+                        System.out.println("opportunityRepository.4().toString()");
+                        break;
+                }
+            case 8:
+                for (String each : byOpportunityStates) {
+                    System.out.println(each);
+                }
+                scannerNum = CRM.verifyIntInput(scanner, 1, 4);
+                switch (scannerNum){
+                    case 1:
+                        System.out.println(opportunityRepository.countMeanOfOpportunitiesAssociatedToAccount().toString());
+                        break;
+                    case 2:
+                        System.out.println("opportunityRepository.().toString()");
+                        break;
+                    case 3:
+                        System.out.println(opportunityRepository.maxOpportunitiesAssociatedToAccount().toString());
+                        break;
+                    case 4:
+                        System.out.println(opportunityRepository.minOpportunitiesAssociatedToAccount().toString());
+                        break;
+                }
+        }
+    }
 }
