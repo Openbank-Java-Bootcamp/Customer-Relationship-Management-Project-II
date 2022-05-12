@@ -109,22 +109,26 @@ public interface OpportunityRepository extends JpaRepository<Opportunity, String
     int MinQuantityOfProduct();
 
 
+    //CITY
     //“Report Opportunity by City”
-    @Query(value = "SELECT city, COUNT (*) FROM opportunity WHERE city = :city GROUP BY city", nativeQuery = true)
-    Integer countOpportunitiesByCity(String city);
+    @Query(value = "SELECT city, COUNT(*) FROM opportunity GROUP BY city", nativeQuery = true)
+    List<Object[]> findCountGroupByCity();
 
     //“Report CLOSED-WON by City”
-    @Query(value = "SELECT COUNT (*) FROM opportunity WHERE city = :city AND status = 'CLOSED-WON' GROUP BY city", nativeQuery = true)
-    Integer countOpportunitiesByCityWithStatusCloseWon(String city);
+    @Query(value = "SELECT city, COUNT(*) FROM opportunity WHERE status = 'CLOSED_WON' GROUP BY city", nativeQuery = true)
+    List<Object[]> findCountWithStatusWonGroupByCity();
 
     //“Report CLOSED-LOST by City”
-    @Query(value = "SELECT COUNT (*) FROM opportunity where city = :city AND status = 'CLOSE-LOST' GROUP BY city", nativeQuery = true)
-    Integer countOpportunitiesByCityWithStatusCloseLost(String city);
+    @Query(value = "SELECT city, COUNT(*) FROM opportunity WHERE status = 'CLOSED_LOST' GROUP BY city", nativeQuery = true)
+    List<Object[]> findCountWithStatusLostGroupByCity();
 
     //“Report OPEN by City”
-    @Query(value = "SELECT COUNT (*) FROM opportunity where city = :city AND status = 'open' GROUP BY city", nativeQuery = true)
-    Integer countOpportunitiesByCityWithStatusOpen(String city);
+    @Query(value = "SELECT city, COUNT(*) FROM opportunity WHERE status = 'OPEN' GROUP BY city", nativeQuery = true)
+    List<Object[]> findCountWithStatusOpenGroupByCity();
 
+
+
+    //OPPORTUNITY
     //The mean number of Opportunities associated with an Account can be displayed by typing “Mean Opps per Account”
     @Query(value = "SELECT AVG(opportunities_per_account) FROM (SELECT COUNT (*) opportunities_per_account FROM opportunity GROUP BY account_id) sums", nativeQuery = true)
     Double countMeanOfOpportunitiesAssociatedToAccount();
