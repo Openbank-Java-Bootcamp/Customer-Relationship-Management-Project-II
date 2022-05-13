@@ -9,10 +9,6 @@ When the Opportunity is closed, the status will be changed to LOST or WON accord
 
 
 
-![Screen Shot 2022-05-06 at 4 21 33 PM](https://user-images.githubusercontent.com/88110591/167152122-caf50e29-5f00-4b65-9be9-69d71127316c.png)
-
-
-
 User Diagram
 
 ![CRM use case diagram](https://user-images.githubusercontent.com/88110591/167152130-3e4d0f88-9a61-4ace-a7e9-d19c25dbae3f.png)
