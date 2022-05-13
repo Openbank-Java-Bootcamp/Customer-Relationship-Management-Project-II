@@ -73,31 +73,46 @@ class OpportunityRepositoryTest {
                 new Contact("Germis", 999999999, "rrr@rrr.rr")
         ));
 
-        opportunities = opportunityRepository.saveAll(List.of(
-                new Opportunity(Product.BOX, 10, contacts.get(0), salesReps.get(0)),
-                new Opportunity(Product.FLATBED, 1, contacts.get(1), salesReps.get(0)),
-                new Opportunity(Product.BOX, 15, contacts.get(2), salesReps.get(2)),
-                new Opportunity(Product.HYBRID, 2, contacts.get(3), salesReps.get(1)),
-                new Opportunity(Product.BOX, 5, contacts.get(4), salesReps.get(0)),
-                new Opportunity(Product.BOX, 50, contacts.get(5), salesReps.get(0)),
-                new Opportunity(Product.BOX, 4, contacts.get(6), salesReps.get(1)),
-                new Opportunity(Product.BOX, 4, contacts.get(7), salesReps.get(0)),
-                new Opportunity(Product.BOX, 4, contacts.get(8), salesReps.get(1)),
-                new Opportunity(Product.BOX, 4, contacts.get(9), salesReps.get(2))
+        accounts = accountRepository.saveAll(List.of(
+                new Account(Industry.ECOMMERCE, 150, "Valencia", "Spain"),
+                new Account(Industry.MEDICAL, 15, "Madrid", "Spain"),
+                new Account(Industry.MANUFACTURING, 1, "London", "Uk"),
+                new Account(Industry.MANUFACTURING, 10, "Madrid", "Spain"),
+                new Account(Industry.MEDICAL, 25, "Madrid", "Spain"),
+                new Account(Industry.OTHER, 20, "London", "Uk"),
+                new Account(Industry.OTHER, 10, "London", "Uk"),
+                new Account(Industry.MEDICAL, 21, "Madrid", "Spain"),
+                new Account(Industry.ECOMMERCE, 10, "Barcelona", "Spain"),
+                new Account(Industry.MANUFACTURING, 5, "London", "Uk")
         ));
 
-//        accounts = accountRepository.saveAll(List.of(
-//                new Account(Industry.ECOMMERCE, 150, "Valencia", "Spain"),
-//                new Account(Industry.MEDICAL, 15, "Madrid", "Spain"),
-//                new Account(Industry.MANUFACTURING, 1, "London", "Uk"),
-//                new Account(Industry.MANUFACTURING, 10, "Madrid", "Spain"),
-//                new Account(Industry.MEDICAL, 25, "Madrid", "Spain"),
-//                new Account(Industry.OTHER, 20, "London", "Uk"),
-//                new Account(Industry.OTHER, 10, "London", "Uk"),
-//                new Account(Industry.MEDICAL, 21, "Madrid", "Spain"),
-//                new Account(Industry.ECOMMERCE, 10, "Barcelona", "Spain"),
-//                new Account(Industry.MANUFACTURING, 5, "London", "Uk")
+        opportunities = opportunityRepository.saveAll(List.of(
+                new Opportunity(Product.BOX, 10, contacts.get(0), salesReps.get(0),accounts.get(0)),
+                new Opportunity(Product.FLATBED, 1, contacts.get(1), salesReps.get(0),accounts.get(2)),
+                new Opportunity(Product.BOX, 15, contacts.get(2), salesReps.get(2),accounts.get(5)),
+                new Opportunity(Product.HYBRID, 2, contacts.get(3), salesReps.get(1),accounts.get(3)),
+                new Opportunity(Product.BOX, 5, contacts.get(4), salesReps.get(0),accounts.get(4)),
+                new Opportunity(Product.BOX, 50, contacts.get(5), salesReps.get(0),accounts.get(2)),
+                new Opportunity(Product.BOX, 4, contacts.get(6), salesReps.get(1),accounts.get(1)),
+                new Opportunity(Product.BOX, 4, contacts.get(7), salesReps.get(0),accounts.get(2)),
+                new Opportunity(Product.BOX, 4, contacts.get(8), salesReps.get(1),accounts.get(3)),
+                new Opportunity(Product.BOX, 4, contacts.get(9), salesReps.get(2),accounts.get(6))
+        ));
+
+//        opportunities = opportunityRepository.saveAll(List.of(
+//                new Opportunity(Product.BOX, 10, contacts.get(0), salesReps.get(0)),
+//                new Opportunity(Product.FLATBED, 1, contacts.get(1), salesReps.get(0)),
+//                new Opportunity(Product.BOX, 15, contacts.get(2), salesReps.get(2)),
+//                new Opportunity(Product.HYBRID, 2, contacts.get(3), salesReps.get(1)),
+//                new Opportunity(Product.BOX, 5, contacts.get(4), salesReps.get(0)),
+//                new Opportunity(Product.BOX, 50, contacts.get(5), salesReps.get(0)),
+//                new Opportunity(Product.BOX, 4, contacts.get(6), salesReps.get(1)),
+//                new Opportunity(Product.BOX, 4, contacts.get(7), salesReps.get(0)),
+//                new Opportunity(Product.BOX, 4, contacts.get(8), salesReps.get(1)),
+//                new Opportunity(Product.BOX, 4, contacts.get(9), salesReps.get(2))
 //        ));
+
+
     }
 
     @AfterEach
