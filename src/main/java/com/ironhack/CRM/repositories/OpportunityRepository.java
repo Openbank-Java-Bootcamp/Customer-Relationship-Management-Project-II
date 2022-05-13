@@ -13,7 +13,6 @@ import java.util.List;
 @Component
 public interface OpportunityRepository extends JpaRepository<Opportunity, String> {
 
-
 //By SalesRep:
 //“Report Opportunity by SalesRep”
 
@@ -34,12 +33,9 @@ public interface OpportunityRepository extends JpaRepository<Opportunity, String
 
 
 
-
-
-
-    //By Product:
-    //“Report Opportunity by the product”
-    @Query(value = "SELECT product, COUNT(*) FROM opportunity GROUP BY product", nativeQuery = true)
+//By Product:
+//“Report Opportunity by the product”
+@Query(value = "SELECT product, COUNT(*) FROM opportunity GROUP BY product", nativeQuery = true)
     List<Object[]> findCountGroupByProduct();
 
 //“Report CLOSED-WON by the product”
@@ -95,9 +91,13 @@ public interface OpportunityRepository extends JpaRepository<Opportunity, String
 
     //By Quantity:
 
+
+    //By Quantity:
+
     // Mean quantity of products
     @Query(value = "SELECT AVG(product) FROM opportunity", nativeQuery = true)
     double findMeanProductCount();
+
 
     // Median quantity of products
     @Query(value = "SELECT AVG(aa.product) as median" +

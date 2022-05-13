@@ -61,6 +61,7 @@ public class Opportunity {
     }
 
 
+
     //SETTERS
 
     public void setProduct(Product product) {
