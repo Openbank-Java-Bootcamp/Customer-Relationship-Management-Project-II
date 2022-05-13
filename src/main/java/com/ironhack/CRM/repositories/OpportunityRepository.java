@@ -103,38 +103,24 @@ public interface OpportunityRepository extends JpaRepository<Opportunity, String
 
     //CITY
     //“Report Opportunity by City”
-    @Query(value = "SELECT city, COUNT(*) FROM opportunity GROUP BY city", nativeQuery = true)
+
+    @Query(value = "SELECT account.city, COUNT(*) FROM opportunity, account WHERE opportunity.account_id = account.id GROUP BY account.city ORDER BY account.city", nativeQuery = true)
     List<Object[]> findCountGroupByCity();
 
     //“Report CLOSED-WON by City”
-    @Query(value = "SELECT city, COUNT(*) FROM opportunity WHERE status = 'CLOSED_WON' GROUP BY city", nativeQuery = true)
+    @Query(value = "SELECT account.city, COUNT(*) FROM opportunity, account WHERE opportunity.account_id = account.id AND status = 'CLOSED_WON' GROUP BY account.city", nativeQuery = true)
     List<Object[]> findCountWithStatusWonGroupByCity();
 
     //“Report CLOSED-LOST by City”
-    @Query(value = "SELECT city, COUNT(*) FROM opportunity WHERE status = 'CLOSED_LOST' GROUP BY city", nativeQuery = true)
+    @Query(value = "SELECT account.city, COUNT(*) FROM opportunity, account WHERE opportunity.account_id = account.id AND status = 'CLOSED_LOST' GROUP BY account.city", nativeQuery = true)
     List<Object[]> findCountWithStatusLostGroupByCity();
 
     //“Report OPEN by City”
-    @Query(value = "SELECT city, COUNT(*) FROM opportunity WHERE status = 'OPEN' GROUP BY city", nativeQuery = true)
+    @Query(value = "SELECT account.city, COUNT(*) FROM opportunity, account WHERE opportunity.account_id = account.id AND status = 'OPEN' GROUP BY account.city", nativeQuery = true)
     List<Object[]> findCountWithStatusOpenGroupByCity();
 
-
-
     //OPPORTUNITY
-    //The mean number of Opportunities associated with an Account can be displayed by typing “Mean Opps per Account”
-    @Query(value = "SELECT AVG(opportunities_per_account) FROM (SELECT COUNT (*) opportunities_per_account FROM opportunity GROUP BY account_id) sums", nativeQuery = true)
-    Double countMeanOfOpportunitiesAssociatedToAccount();
-
-    //The median number of Opportunities associated with an Account can be displayed by typing “Median Opps per Account”
-
-
-
-    //The maximum number of Opportunities associated with an Account can be displayed by typing “Max Opps per Account”
-    @Query(value = "SELECT MAX(opportunities_per_account) FROM (SELECT COUNT (*) opportunities_per_account FROM opportunity GROUP BY account_id) sums", nativeQuery = true)
-    Integer maxOpportunitiesAssociatedToAccount();
-
-    //The minimum number of Opportunities associated with an Account can be displayed by typing “Min Opps per Account”
-    @Query(value = "SELECT MIN(opportunities_per_account) FROM (SELECT COUNT (*) opportunities_per_account FROM opportunity GROUP BY account_id) sums", nativeQuery = true)
-    Integer minOpportunitiesAssociatedToAccount();
+    @Query(value = "SELECT account.id, count(opportunity.id) FROM opportunity join account on opportunity.account_id = account.id GROUP BY account.id", nativeQuery = true)
+    List<Object[]> countMeanOfOpportunitiesAssociatedToAccount();
 
 }

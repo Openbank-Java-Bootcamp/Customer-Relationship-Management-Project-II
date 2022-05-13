@@ -47,6 +47,7 @@ public class CRM {
             //"Enter LOOKUP ACCOUNT along with the Account ID to see a particular Account.\n" +
             "Enter " + ConsoleColors.BLUE + "CLOSE-WON <id>" + ConsoleColors.RESET + " to close an won Opportunity.\n" +
             "Enter " + ConsoleColors.BLUE + "CLOSE-LOST <id>" + ConsoleColors.RESET + " to close a lost Opportunity.\n" +
+            "Enter " + ConsoleColors.BLUE + "REPORTS" + ConsoleColors.RESET + " to get to Reports menu.\n" +
             "Enter " + ConsoleColors.RED + "EXIT" + ConsoleColors.RESET + " to exit.\n";
 
 
@@ -763,18 +764,37 @@ public class CRM {
                     System.out.println(each);
                 }
                 scannerNum = CRM.verifyIntInput(scanner, 1, 4);
+                List<Integer> list = new ArrayList<>();
+                List<Object[]> objectArray = opportunityRepository.countMeanOfOpportunitiesAssociatedToAccount();
+                for(int i = 0; i < opportunityRepository.countMeanOfOpportunitiesAssociatedToAccount().size(); i++){
+                    list.add((Integer) objectArray.get(i)[1]);
+                }
                 switch (scannerNum){
                     case 1:
-                        System.out.println(opportunityRepository.countMeanOfOpportunitiesAssociatedToAccount().toString());
+                        Integer sum = 0;
+                        for(int i = 0; i < list.size(); i++){
+                            sum += list.get(i);
+                        }
+                        Integer mean = sum / list.size();
+                        System.out.println(mean);
                         break;
                     case 2:
-                        System.out.println("opportunityRepository.().toString()");
+                        Collections.sort(list);
+                        if (list.size() % 2 == 1)
+                            System.out.println(list.get((list.size() + 1) / 2 - 1));
+                        else {
+                            double lower = list.get(list.size() / 2 - 1);
+                            double upper = list.get(list.size() / 2);
+                            System.out.println((lower + upper) / 2.0);
+                        }
                         break;
                     case 3:
-                        System.out.println(opportunityRepository.maxOpportunitiesAssociatedToAccount().toString());
+                        Collections.sort(list);
+                        System.out.println(list.get(list.size()-1));
                         break;
                     case 4:
-                        System.out.println(opportunityRepository.minOpportunitiesAssociatedToAccount().toString());
+                        Collections.sort(list);
+                        System.out.println(list.get(0));
                         break;
                 }
         }

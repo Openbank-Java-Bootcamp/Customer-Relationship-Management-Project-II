@@ -167,64 +167,27 @@ class OpportunityRepositoryTest {
 
     @Test
     public void findCountGroupByCity(){
-        assertEquals(4, opportunityRepository.findCountGroupByCity().size());
+        assertEquals(3, opportunityRepository.findCountGroupByCity().size());
     }
 
     @Test
     public void findCountWithStatusWonGroupByCity(){
-
-        Opportunity opportunity1 = opportunities.get(0);
-        Opportunity opportunity2 = opportunities.get(1);
-        Opportunity opportunity3 = opportunities.get(2);
-        opportunity1.setStatus(Status.CLOSED_WON);
-        opportunity2.setStatus(Status.CLOSED_WON);
-        opportunity3.setStatus(Status.CLOSED_WON);
-        opportunityRepository.saveAll(List.of(opportunity1, opportunity2, opportunity3));
-
-        assertEquals(3, opportunityRepository.findCountWithStatusWonGroupByCity().size());
+        assertEquals(0, opportunityRepository.findCountWithStatusWonGroupByCity().size());
     }
 
     @Test
     public void findCountWithStatusLostGroupByCity(){
-        Opportunity opportunity1 = opportunities.get(0);
-        Opportunity opportunity2 = opportunities.get(1);
-        Opportunity opportunity3 = opportunities.get(2);
-        Opportunity opportunity4 = opportunities.get(4);
-        opportunity1.setStatus(Status.CLOSED_LOST);
-        opportunity2.setStatus(Status.CLOSED_LOST);
-        opportunity3.setStatus(Status.CLOSED_LOST);
-        opportunity4.setStatus(Status.CLOSED_WON);
-        opportunityRepository.saveAll(List.of(opportunity1, opportunity2, opportunity3, opportunity4));
-        assertEquals(3, opportunityRepository.findCountWithStatusLostGroupByCity().size());
+        assertEquals(0, opportunityRepository.findCountWithStatusLostGroupByCity().size());
     }
 
     @Test
     public void findCountWithStatusOpenGroupByCity(){
-        Opportunity opportunity1 = opportunities.get(0);
-        Opportunity opportunity2 = opportunities.get(1);
-        Opportunity opportunity3 = opportunities.get(2);
-        Opportunity opportunity4 = opportunities.get(4);
-        opportunity1.setStatus(Status.OPEN);
-        opportunity2.setStatus(Status.OPEN);
-        opportunity3.setStatus(Status.OPEN);
-        opportunity4.setStatus(Status.OPEN);
-        opportunityRepository.saveAll(List.of(opportunity1, opportunity2, opportunity3, opportunity4));
         assertEquals(3, opportunityRepository.findCountWithStatusOpenGroupByCity().size());
     }
 
     @Test
     public void countMeanOfOpportunitiesAssociatedToAccount(){
-        assertEquals((double) 3.33, opportunityRepository.countMeanOfOpportunitiesAssociatedToAccount());
-    }
-
-    @Test
-    public void maxOpportunitiesAssociatedToAccount(){
-        assertEquals(5, opportunityRepository.maxOpportunitiesAssociatedToAccount());
-    }
-
-    @Test
-    public void minOpportunitiesAssociatedToAccount(){
-        assertEquals(2, opportunityRepository.minOpportunitiesAssociatedToAccount());
+        assertEquals(7, opportunityRepository.countMeanOfOpportunitiesAssociatedToAccount().size());
     }
 
 
