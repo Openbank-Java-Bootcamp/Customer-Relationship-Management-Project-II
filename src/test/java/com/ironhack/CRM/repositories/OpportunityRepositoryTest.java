@@ -289,8 +289,76 @@ class OpportunityRepositoryTest {
         assertEquals(BigInteger.valueOf(2), opportunityRepository.findCountWithStatusLostGroupByIndustry().get(1)[1]);
     }
 
+    @Test
+    public void findCountGroupByCountry() {
+        assertEquals(2, opportunityRepository.findCountGroupByCountry().size());
+        /*assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountGroupByCountry().get(0)[1]);
+        assertEquals(BigInteger.valueOf(5), opportunityRepository.findCountGroupByCountry().get(1)[1]);
+        assertEquals(BigInteger.valueOf(2), opportunityRepository.findCountGroupByCountry().get(2)[1]);
+        assertEquals(BigInteger.valueOf(2), opportunityRepository.findCountGroupByCountry().get(3)[1]);*/
+    }
+    @Test
+    public void findCountWithStatusOpenGroupByCountry() {
+        Opportunity opportunity10 = opportunities.get(9);
+        Opportunity opportunity9 = opportunities.get(8);
+        opportunity10.setStatus(Status.CLOSED_WON);
+        opportunity9.setStatus(Status.CLOSED_LOST);
+        opportunityRepository.saveAll(List.of(opportunity10, opportunity9));
+        assertEquals(2, opportunityRepository.findCountWithStatusOpenGroupByCountry().size());
+       /* assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusOpenGroupByCountry().get(0)[1]);
+        assertEquals(BigInteger.valueOf(4), opportunityRepository.findCountWithStatusOpenGroupByCountry().get(1)[1]);
+        assertEquals(BigInteger.valueOf(2), opportunityRepository.findCountWithStatusOpenGroupByCountry().get(2)[1]);
+        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusOpenGroupByCountry().get(3)[1]);*/
+    }
+
+    @Test
+    public void findCountWithStatusWonGroupByCountry() {
+        Opportunity opportunity1 = opportunities.get(0);
+        Opportunity opportunity2 = opportunities.get(2);
+        Opportunity opportunity3 = opportunities.get(3);
+        opportunity1.setStatus(Status.CLOSED_WON);
+        opportunity2.setStatus(Status.CLOSED_WON);
+        opportunity3.setStatus(Status.CLOSED_WON);
+        opportunityRepository.saveAll(List.of(opportunity1, opportunity2, opportunity3));
+        assertEquals(2, opportunityRepository.findCountWithStatusWonGroupByCountry().size());
+       /* assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusWonGroupByCountry().get(0)[1]);
+        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusWonGroupByCountry().get(1)[1]);
+        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusWonGroupByCountry().get(2)[1]);*/
+    }
+    @Test
+    public void findCountWithStatusLostGroupByCountry() {
+        Opportunity opportunity1 = opportunities.get(0);
+        Opportunity opportunity2 = opportunities.get(1);
+        Opportunity opportunity4 = opportunities.get(3);
+        opportunity1.setStatus(Status.CLOSED_LOST);
+        opportunity2.setStatus(Status.CLOSED_LOST);
+        opportunity4.setStatus(Status.CLOSED_LOST);
+        opportunityRepository.saveAll(List.of(opportunity1, opportunity2, opportunity4));
+        assertEquals(2, opportunityRepository.findCountWithStatusLostGroupByCountry().size());
+       /* assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusLostGroupByCountry().get(0)[1]);
+        assertEquals(BigInteger.valueOf(2), opportunityRepository.findCountWithStatusLostGroupByCountry().get(1)[1]);*/
+    }
 
 
+    @Test
+    public void findMeanProductCount() {
+        assertEquals(10, opportunityRepository.findMeanProductCount());
+    }
+
+    @Test
+    public void findMedianProductCount() {
+        assertEquals(1, opportunityRepository.findMedianProductCount());
+    }
+
+    @Test
+    public void findMaxEmployeeCount() {
+        assertEquals(15, opportunityRepository.findMaxEmployeeCount());
+    }
+
+    @Test
+    public void findMinProductCount() {
+        assertEquals(2, opportunityRepository.findMinProductCount());
+    }
 
 
 }

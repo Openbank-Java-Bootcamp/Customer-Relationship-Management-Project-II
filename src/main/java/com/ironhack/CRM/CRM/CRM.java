@@ -747,16 +747,17 @@ public class CRM {
                 scannerNum = CRM.verifyIntInput(scanner, 1, 4);
                 switch (scannerNum){
                     case 1:
-                        System.out.println("opportunityRepository.1().toString()");
+                        System.out.println(opportunityRepository.findMeanProductCount());
                         break;
                     case 2:
-                        System.out.println("opportunityRepository.2().toString()");
+                        System.out.println(opportunityRepository.findMedianProductCount());
                         break;
                     case 3:
-                        System.out.println("opportunityRepository.3().toString()");
+                        System.out.println(opportunityRepository.findMaxEmployeeCount());
                         break;
                     case 4:
-                        System.out.println("opportunityRepository.4().toString()");
+                        System.out.println(opportunityRepository.findMinProductCount());
+
                         break;
                 }
             case 8:
