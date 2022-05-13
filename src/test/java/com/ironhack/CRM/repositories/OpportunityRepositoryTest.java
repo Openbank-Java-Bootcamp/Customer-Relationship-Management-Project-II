@@ -73,45 +73,37 @@ class OpportunityRepositoryTest {
                 new Contact("Germis", 999999999, "rrr@rrr.rr")
         ));
 
-        opportunities = opportunityRepository.saveAll(List.of(
-                new Opportunity(Product.BOX, 10, contacts.get(0), salesReps.get(0)),
-                new Opportunity(Product.FLATBED, 1, contacts.get(1), salesReps.get(0)),
-                new Opportunity(Product.BOX, 15, contacts.get(2), salesReps.get(2)),
-                new Opportunity(Product.HYBRID, 2, contacts.get(3), salesReps.get(1)),
-                new Opportunity(Product.BOX, 5, contacts.get(4), salesReps.get(0)),
-                new Opportunity(Product.BOX, 50, contacts.get(5), salesReps.get(0)),
-                new Opportunity(Product.BOX, 4, contacts.get(6), salesReps.get(1)),
-                new Opportunity(Product.BOX, 4, contacts.get(7), salesReps.get(0)),
-                new Opportunity(Product.BOX, 4, contacts.get(8), salesReps.get(1)),
-                new Opportunity(Product.BOX, 4, contacts.get(9), salesReps.get(2))
+        accounts = accountRepository.saveAll(List.of(
+                new Account(Industry.ECOMMERCE, 150, "Valencia", "Spain"),
+                new Account(Industry.MEDICAL, 15, "Madrid", "Spain"),
+                new Account(Industry.MANUFACTURING, 1, "London", "Uk"),
+                new Account(Industry.MANUFACTURING, 10, "Madrid", "Spain"),
+                new Account(Industry.MEDICAL, 25, "Madrid", "Spain"),
+                new Account(Industry.OTHER, 20, "London", "Uk"),
+                new Account(Industry.OTHER, 10, "London", "Uk"),
+                new Account(Industry.MEDICAL, 21, "Madrid", "Spain"),
+                new Account(Industry.ECOMMERCE, 10, "Barcelona", "Spain"),
+                new Account(Industry.MANUFACTURING, 5, "London", "Uk")
         ));
 
         opportunities = opportunityRepository.saveAll(List.of(
-                new Opportunity(Account.country, 10, contacts.get(0), salesReps.get(0),accounts.get(0)),
-                new Opportunity(Product.FLATBED, 1, contacts.get(1), salesReps.get(0),accounts.get(2)),
-                new Opportunity(Product.BOX, 15, contacts.get(2), salesReps.get(2),accounts.get(5)),
-                new Opportunity(Product.HYBRID, 2, contacts.get(3), salesReps.get(1),accounts.get(3)),
-                new Opportunity(Product.BOX, 5, contacts.get(4), salesReps.get(0),accounts.get(4)),
-                new Opportunity(Product.BOX, 50, contacts.get(5), salesReps.get(0),accounts.get(2)),
-                new Opportunity(Product.BOX, 4, contacts.get(6), salesReps.get(1),accounts.get(1)),
-                new Opportunity(Product.BOX, 4, contacts.get(7), salesReps.get(0),accounts.get(2)),
-                new Opportunity(Product.BOX, 4, contacts.get(8), salesReps.get(1),accounts.get(3)),
-                new Opportunity(Product.BOX, 4, contacts.get(9), salesReps.get(2),accounts.get(6))
+
+
+
+        new Opportunity(Product.BOX, 10, contacts.get(0), salesReps.get(0), accounts.get(0)),
+
+        new Opportunity(Product.FLATBED, 1, contacts.get(1), salesReps.get(0), accounts.get(2)),
+                new Opportunity(Product.BOX, 15, contacts.get(2), salesReps.get(2), accounts.get(5)),
+                new Opportunity(Product.HYBRID, 2, contacts.get(3), salesReps.get(1), accounts.get(3)),
+                new Opportunity(Product.BOX, 5, contacts.get(4), salesReps.get(0), accounts.get(4)),
+                new Opportunity(Product.BOX, 50, contacts.get(5), salesReps.get(0), accounts.get(2)),
+                new Opportunity(Product.BOX, 4, contacts.get(6), salesReps.get(1), accounts.get(1)),
+                new Opportunity(Product.BOX, 4, contacts.get(7), salesReps.get(0), accounts.get(2)),
+                new Opportunity(Product.BOX, 4, contacts.get(8), salesReps.get(1), accounts.get(3)),
+                new Opportunity(Product.BOX, 4, contacts.get(9), salesReps.get(2), accounts.get(6))
         ));
 
 
-//        accounts = accountRepository.saveAll(List.of(
-//                new Account(Industry.ECOMMERCE, 150, "Valencia", "Spain"),
-//                new Account(Industry.MEDICAL, 15, "Madrid", "Spain"),
-//                new Account(Industry.MANUFACTURING, 1, "London", "Uk"),
-//                new Account(Industry.MANUFACTURING, 10, "Madrid", "Spain"),
-//                new Account(Industry.MEDICAL, 25, "Madrid", "Spain"),
-//                new Account(Industry.OTHER, 20, "London", "Uk"),
-//                new Account(Industry.OTHER, 10, "London", "Uk"),
-//                new Account(Industry.MEDICAL, 21, "Madrid", "Spain"),
-//                new Account(Industry.ECOMMERCE, 10, "Barcelona", "Spain"),
-//                new Account(Industry.MANUFACTURING, 5, "London", "Uk")
-//        ));
     }
 
     @AfterEach
@@ -174,16 +166,12 @@ class OpportunityRepositoryTest {
         assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusOpenGroupByProduct().get(2)[1]);
     }
 
-    @Test
-    public void findCountGroupByCountry() {
-        assertEquals(3, opportunityRepository.findCountGroupByProduct().size());
-        assertEquals(BigInteger.valueOf(8), opportunityRepository.findCountGroupByCountry().get(0)[1]);
-        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountGroupByCountry().get(1)[1]);
-        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountGroupByCountry().get(2)[1]);
-    }
+
+
 
     @Test
-    public void findCountWithStatusWonGroupByCountry() {
+    public void findCountWithStatusWonGroupByCity(){
+
         Opportunity opportunity1 = opportunities.get(0);
         Opportunity opportunity2 = opportunities.get(1);
         Opportunity opportunity3 = opportunities.get(2);
@@ -191,37 +179,53 @@ class OpportunityRepositoryTest {
         opportunity2.setStatus(Status.CLOSED_WON);
         opportunity3.setStatus(Status.CLOSED_WON);
         opportunityRepository.saveAll(List.of(opportunity1, opportunity2, opportunity3));
-        assertEquals(2, opportunityRepository.findCountWithStatusWonGroupByCountry().size());
-        assertEquals(BigInteger.valueOf(2), opportunityRepository.findCountWithStatusWonGroupByCountry().get(0)[1]);
-        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusWonGroupByCountry().get(1)[1]);
 
+        assertEquals(3, opportunityRepository.findCountWithStatusWonGroupByCity().size());
     }
+
     @Test
-    public void findCountWithStatusLostGroupByCountry() {
+    public void findCountWithStatusLostGroupByCity(){
         Opportunity opportunity1 = opportunities.get(0);
         Opportunity opportunity2 = opportunities.get(1);
-        Opportunity opportunity4 = opportunities.get(3);
+        Opportunity opportunity3 = opportunities.get(2);
+        Opportunity opportunity4 = opportunities.get(4);
         opportunity1.setStatus(Status.CLOSED_LOST);
         opportunity2.setStatus(Status.CLOSED_LOST);
-        opportunity4.setStatus(Status.CLOSED_LOST);
-        opportunityRepository.saveAll(List.of(opportunity1, opportunity2, opportunity4));
-        assertEquals(3, opportunityRepository.findCountWithStatusLostGroupByCountry().size());
-        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusLostGroupByCountry().get(0)[1]);
-        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusLostGroupByCountry().get(1)[1]);
-        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusLostGroupByCountry().get(2)[1]);
+        opportunity3.setStatus(Status.CLOSED_LOST);
+        opportunity4.setStatus(Status.CLOSED_WON);
+        opportunityRepository.saveAll(List.of(opportunity1, opportunity2, opportunity3, opportunity4));
+        assertEquals(3, opportunityRepository.findCountWithStatusLostGroupByCity().size());
     }
 
     @Test
-    public void findCountWithStatusOpenGroupByCountry() {
-        Opportunity opportunity10 = opportunities.get(9);
-        Opportunity opportunity9 = opportunities.get(8);
-        opportunity10.setStatus(Status.CLOSED_LOST);
-        opportunity9.setStatus(Status.CLOSED_LOST);
-        opportunityRepository.saveAll(List.of(opportunity10, opportunity9));
-        assertEquals(3, opportunityRepository.findCountWithStatusOpenGroupByCountry().size());
-        assertEquals(BigInteger.valueOf(6), opportunityRepository.findCountWithStatusOpenGroupByCountry().get(0)[1]);
-        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusOpenGroupByCountry().get(1)[1]);
-        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusOpenGroupByCountry().get(2)[1]);
+    public void findCountWithStatusOpenGroupByCity(){
+        Opportunity opportunity1 = opportunities.get(0);
+        Opportunity opportunity2 = opportunities.get(1);
+        Opportunity opportunity3 = opportunities.get(2);
+        Opportunity opportunity4 = opportunities.get(4);
+        opportunity1.setStatus(Status.OPEN);
+        opportunity2.setStatus(Status.OPEN);
+        opportunity3.setStatus(Status.OPEN);
+        opportunity4.setStatus(Status.OPEN);
+        opportunityRepository.saveAll(List.of(opportunity1, opportunity2, opportunity3, opportunity4));
+        assertEquals(3, opportunityRepository.findCountWithStatusOpenGroupByCity().size());
     }
+
+    @Test
+    public void countMeanOfOpportunitiesAssociatedToAccount(){
+        assertEquals((double) 3.33, opportunityRepository.countMeanOfOpportunitiesAssociatedToAccount());
+    }
+
+    @Test
+    public void maxOpportunitiesAssociatedToAccount(){
+        assertEquals(5, opportunityRepository.maxOpportunitiesAssociatedToAccount());
+    }
+
+    @Test
+    public void minOpportunitiesAssociatedToAccount(){
+        assertEquals(2, opportunityRepository.minOpportunitiesAssociatedToAccount());
+    }
+
+
 
 }

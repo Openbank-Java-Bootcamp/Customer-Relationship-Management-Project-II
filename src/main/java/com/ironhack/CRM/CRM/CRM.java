@@ -10,6 +10,7 @@ import com.ironhack.CRM.repositories.AccountRepository;
 import com.ironhack.CRM.repositories.LeadRepository;
 import com.ironhack.CRM.repositories.OpportunityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -688,16 +689,16 @@ public class CRM {
                 scannerNum = CRM.verifyIntInput(scanner, 1, 4);
                 switch (scannerNum){
                     case 1:
-                        System.out.println(opportunityRepository.countOpportunitiesByCity("a").toString());
+                        System.out.println(opportunityRepository.findCountGroupByCity().toString());
                         break;
                     case 2:
-                        System.out.println(opportunityRepository.countOpportunitiesByCityWithStatusCloseWon("b").toString());
+                        System.out.println(opportunityRepository.findCountWithStatusWonGroupByCity().toString());
                         break;
                     case 3:
-                        System.out.println(opportunityRepository.countOpportunitiesByCityWithStatusCloseLost("c").toString());
+                        System.out.println(opportunityRepository.findCountWithStatusLostGroupByCity().toString());
                         break;
                     case 4:
-                        System.out.println(opportunityRepository.countOpportunitiesByCityWithStatusOpen("d").toString());
+                        System.out.println(opportunityRepository.findCountWithStatusOpenGroupByCity().toString());
                         break;
                 }
             case 5:
