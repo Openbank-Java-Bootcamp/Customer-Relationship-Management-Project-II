@@ -50,22 +50,24 @@ public interface OpportunityRepository extends JpaRepository<Opportunity, String
 
     //By country:
     //Report Opportunity by country
-    @Query(value = "SELECT COUNT(*) FROM opportunity GROUP BY country", nativeQuery = true)
-    List<Opportunity> findCountGroupByCountry();
+
+    @Query(value = "SELECT account.country, COUNT(*) FROM opportunity, account WHERE opportunity.account_id = account.id GROUP BY account.country ORDER BY account.country", nativeQuery = true)
+    List<Object[]> findCountGroupByCountry();
 
     //Report CLOSED-WON by the country
-    @Query(value = "SELECT COUNT(*) FROM opportunity WHERE status = 'CLOSED_WON' GROUP BY country", nativeQuery = true)
-    List<Opportunity> findCountWithStatusWonGroupByCountry();
+
+    @Query(value = "SELECT account.country, COUNT(*) FROM opportunity, account WHERE opportunity.account_id = account.id AND status = 'CLOSED_WON' GROUP BY account.country ORDER BY account.country", nativeQuery = true)
+    List<Object[]> findCountWithStatusWonGroupByCountry();
 
     //Report CLOSED-LOST by the country
-    @Query(value = "SELECT COUNT(*) FROM opportunity WHERE status = 'CLOSED_LOST' GROUP BY country", nativeQuery = true)
-    List<Opportunity> findCountWithStatusLostGroupByCountry();
+
+    @Query(value = "SELECT account.country, COUNT(*) FROM opportunity, account WHERE opportunity.account_id = account.id AND status = 'CLOSED_LOST' GROUP BY account.country ORDER BY account.country", nativeQuery = true)
+    List<Object[]> findCountWithStatusLostGroupByCountry();
 
     //Report OPEN by country
 
-    @Query(value = "SELECT COUNT(*) FROM opportunity WHERE status = 'OPEN' GROUP BY country", nativeQuery = true)
-    List<Opportunity> findCountWithStatusOpenGroupByCountry();
-
+    @Query(value = "SELECT account.country, COUNT(*) FROM opportunity, account WHERE opportunity.account_id = account.id AND status = 'OPEN' GROUP BY account.country ORDER BY country", nativeQuery = true)
+    List<Object[]> findCountWithStatusOpenGroupByCountry();
 
 
     //By Industry:
@@ -99,22 +101,26 @@ public interface OpportunityRepository extends JpaRepository<Opportunity, String
     // Minimum quantity of products
 
 
+    //CITY
     //“Report Opportunity by City”
-    @Query(value = "SELECT city, COUNT (*) FROM opportunity WHERE city = :city GROUP BY city", nativeQuery = true)
-    Integer countOpportunitiesByCity(String city);
+    @Query(value = "SELECT city, COUNT(*) FROM opportunity GROUP BY city", nativeQuery = true)
+    List<Object[]> findCountGroupByCity();
 
     //“Report CLOSED-WON by City”
-    @Query(value = "SELECT COUNT (*) FROM opportunity WHERE city = :city AND status = 'CLOSED-WON' GROUP BY city", nativeQuery = true)
-    Integer countOpportunitiesByCityWithStatusCloseWon(String city);
+    @Query(value = "SELECT city, COUNT(*) FROM opportunity WHERE status = 'CLOSED_WON' GROUP BY city", nativeQuery = true)
+    List<Object[]> findCountWithStatusWonGroupByCity();
 
     //“Report CLOSED-LOST by City”
-    @Query(value = "SELECT COUNT (*) FROM opportunity where city = :city AND status = 'CLOSE-LOST' GROUP BY city", nativeQuery = true)
-    Integer countOpportunitiesByCityWithStatusCloseLost(String city);
+    @Query(value = "SELECT city, COUNT(*) FROM opportunity WHERE status = 'CLOSED_LOST' GROUP BY city", nativeQuery = true)
+    List<Object[]> findCountWithStatusLostGroupByCity();
 
     //“Report OPEN by City”
-    @Query(value = "SELECT COUNT (*) FROM opportunity where city = :city AND status = 'open' GROUP BY city", nativeQuery = true)
-    Integer countOpportunitiesByCityWithStatusOpen(String city);
+    @Query(value = "SELECT city, COUNT(*) FROM opportunity WHERE status = 'OPEN' GROUP BY city", nativeQuery = true)
+    List<Object[]> findCountWithStatusOpenGroupByCity();
 
+
+
+    //OPPORTUNITY
     //The mean number of Opportunities associated with an Account can be displayed by typing “Mean Opps per Account”
     @Query(value = "SELECT AVG(opportunities_per_account) FROM (SELECT COUNT (*) opportunities_per_account FROM opportunity GROUP BY account_id) sums", nativeQuery = true)
     Double countMeanOfOpportunitiesAssociatedToAccount();

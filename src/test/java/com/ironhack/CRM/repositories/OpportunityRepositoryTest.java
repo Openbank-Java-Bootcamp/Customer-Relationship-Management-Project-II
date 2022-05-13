@@ -87,6 +87,7 @@ class OpportunityRepositoryTest {
         ));
 
         opportunities = opportunityRepository.saveAll(List.of(
+
                 new Opportunity(Product.BOX, 10, contacts.get(0), salesReps.get(0),accounts.get(0)),
                 new Opportunity(Product.FLATBED, 1, contacts.get(1), salesReps.get(0),accounts.get(2)),
                 new Opportunity(Product.BOX, 15, contacts.get(2), salesReps.get(2),accounts.get(5)),
@@ -97,6 +98,7 @@ class OpportunityRepositoryTest {
                 new Opportunity(Product.BOX, 4, contacts.get(7), salesReps.get(0),accounts.get(2)),
                 new Opportunity(Product.BOX, 4, contacts.get(8), salesReps.get(1),accounts.get(3)),
                 new Opportunity(Product.BOX, 4, contacts.get(9), salesReps.get(2),accounts.get(6))
+
         ));
 
 
@@ -162,6 +164,7 @@ class OpportunityRepositoryTest {
         assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusOpenGroupByProduct().get(2)[1]);
     }
 
+
     @Test
     public void findCountGroupByCity(){
         assertEquals(4, opportunityRepository.findCountGroupByCity().size());
@@ -169,6 +172,7 @@ class OpportunityRepositoryTest {
 
     @Test
     public void findCountWithStatusWonGroupByCity(){
+
         Opportunity opportunity1 = opportunities.get(0);
         Opportunity opportunity2 = opportunities.get(1);
         Opportunity opportunity3 = opportunities.get(2);
@@ -176,6 +180,7 @@ class OpportunityRepositoryTest {
         opportunity2.setStatus(Status.CLOSED_WON);
         opportunity3.setStatus(Status.CLOSED_WON);
         opportunityRepository.saveAll(List.of(opportunity1, opportunity2, opportunity3));
+
         assertEquals(3, opportunityRepository.findCountWithStatusWonGroupByCity().size());
     }
 
@@ -221,6 +226,7 @@ class OpportunityRepositoryTest {
     public void minOpportunitiesAssociatedToAccount(){
         assertEquals(2, opportunityRepository.minOpportunitiesAssociatedToAccount());
     }
+
 
     @Test
     public void findCountGroupBySalesRep() {
@@ -319,6 +325,7 @@ class OpportunityRepositoryTest {
         assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusLostGroupByIndustry().get(0)[1]);
         assertEquals(BigInteger.valueOf(2), opportunityRepository.findCountWithStatusLostGroupByIndustry().get(1)[1]);
     }
+
 
 
 
