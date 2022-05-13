@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class CRMTest {
     private Lead lead1;
     private Lead emptyLead;
-    private CRM2 testCrm;
+    private CRM testCrm;
     private Contact contact1;
     private Opportunity opportunity1;
     private SalesRep salesRep1;
@@ -27,7 +27,7 @@ class CRMTest {
 
     @BeforeEach
     public void setUp() {
-        testCrm = new CRM2();
+        testCrm = new CRM();
         salesRep1 = new SalesRep("James Hanson");
         testCrm.salesRepList.put(salesRep1.getId(), salesRep1);
         lead1 = new Lead("John Smith", 123456789, "jsmith@example.com", "Company A", salesRep1);

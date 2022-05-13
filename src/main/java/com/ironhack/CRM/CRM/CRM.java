@@ -1,19 +1,25 @@
-/*package com.ironhack.CRM.CRM;
-
+package com.ironhack.CRM.CRM;
 
 import com.ironhack.CRM.ConsoleColors.ConsoleColors;
+import com.ironhack.CRM.CrmApplication;
 import com.ironhack.CRM.enums.Industry;
 import com.ironhack.CRM.enums.Product;
 import com.ironhack.CRM.enums.Status;
 import com.ironhack.CRM.models.*;
 import com.ironhack.CRM.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Component
 public class CRM {
+
 
     @Autowired
     private LeadRepository leadRepository;
@@ -25,8 +31,6 @@ public class CRM {
     private SalesRepRepository salesRepRepository;
     @Autowired
     private ContactRepository contactRepository;
-
-
 
     public Map<String, Lead> leadList = new HashMap<>();
 
@@ -76,75 +80,14 @@ public class CRM {
     public CRM() {
     }
 
-    private List<Lead> leads;
-    private List<Contact> contacts;
-    private List<SalesRep> salesReps;
-    private List<Opportunity> opportunities;
-    private List<Account> accounts;
-    void setUp() {
-
-        salesReps = salesRepRepository.saveAllAndFlush(List.of(
-                new SalesRep("Laura"),
-                new SalesRep("Edita"),
-                new SalesRep("Lina")
-        ));
-
-
-        leads = leadRepository.saveAll(List.of(
-                new Lead("Cris", 121212121, "lll@lll.lt", "Jasons", salesReps.get(1)),
-                new Lead("Jon", 111111111, "aaa@aaa.aa", "Jacks", salesReps.get(1)),
-                new Lead("Sandra", 222222222, "sss@sss.ss", "Thompson", salesReps.get(2)),
-                new Lead("Tom", 333333333, "ddd@ddd.dd", "Son", salesReps.get(1)),
-                new Lead("Thomas", 444444444, "fff@fff.ff", "Sons", salesReps.get(3)),
-                new Lead("Cristina", 555555555, "ggg@ggg.gg", "Jasons", salesReps.get(1)),
-                new Lead("Pedro", 666666666, "hhh@hhh.hh", "Pros", salesReps.get(2)),
-                new Lead("Cristina", 777777777, "jjj@jjj.jj", "Pross", salesReps.get(2)),
-                new Lead("Chris", 888888888, "eee@eee.ee", "Cross", salesReps.get(1)),
-                new Lead("Germis", 999999999, "rrr@rrr.rr", "CrossCountry", salesReps.get(3))
-        ));
-
-        contacts = contactRepository.saveAll(List.of(
-                new Contact("Cris", 121212121, "lll@lll.com"),
-                new Contact("Jon", 111111111, "aaa@aaa.aa"),
-                new Contact("Sandra", 222222222, "sss@sss.ss"),
-                new Contact("Tom", 333333333, "ddd@ddd.dd"),
-                new Contact("Thomas", 444444444, "fff@fff.ff"),
-                new Contact("Cristina", 555555555, "ggg@ggg.gg"),
-                new Contact("Pedro", 666666666, "hhh@hhh.hh"),
-                new Contact("Cristina", 777777777, "jjj@jjj.jj"),
-                new Contact("Chris", 888888888, "eee@eee.ee"),
-                new Contact("Germis", 999999999, "rrr@rrr.rr")
-        ));
-
-        opportunities = opportunityRepository.saveAll(List.of(
-                new Opportunity(Product.BOX, 10, contacts.get(1), salesReps.get(1)),
-                new Opportunity(Product.FLATBED, 1, contacts.get(2), salesReps.get(1)),
-                new Opportunity(Product.BOX, 15, contacts.get(3), salesReps.get(2)),
-                new Opportunity(Product.HYBRID, 2, contacts.get(4), salesReps.get(2)),
-                new Opportunity(Product.BOX, 5, contacts.get(5), salesReps.get(1)),
-                new Opportunity(Product.BOX, 50, contacts.get(6), salesReps.get(1)),
-                new Opportunity(Product.BOX, 4, contacts.get(7), salesReps.get(2)),
-                new Opportunity(Product.BOX, 4, contacts.get(8), salesReps.get(1)),
-                new Opportunity(Product.BOX, 4, contacts.get(9), salesReps.get(2)),
-                new Opportunity(Product.BOX, 4, contacts.get(10), salesReps.get(3))
-        ));
-
-        accounts = accountRepository.saveAll(List.of(
-                new Account(Industry.ECOMMERCE, 150, "Valencia", "Spain"),
-                new Account(Industry.MEDICAL, 15, "Madrid", "Spain"),
-                new Account(Industry.MANUFACTURING, 1, "London", "Uk"),
-                new Account(Industry.MANUFACTURING, 10, "Madrid", "Spain"),
-                new Account(Industry.MEDICAL, 25, "Madrid", "Spain"),
-                new Account(Industry.OTHER, 20, "London", "Uk"),
-                new Account(Industry.OTHER, 10, "London", "Uk"),
-                new Account(Industry.MEDICAL, 21, "Madrid", "Spain"),
-                new Account(Industry.ECOMMERCE, 10, "Barcelona", "Spain"),
-                new Account(Industry.MANUFACTURING, 5, "London", "Uk")
-        ));
+    public void verifyIdIsInt(String input) {
+        String regx = "^[0-9]*$";
+        Pattern pattern = Pattern.compile(regx,Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(input);
+        if(!matcher.find()) {
+            throw new IllegalArgumentException("Id is digits only.");
+        }
     }
-
-
-
     public void verifyName(String name) {
         //String regx = "^[a-zA-Z]+\\.?$";
         ///^[a-z ,.'-]+$/i
@@ -256,7 +199,7 @@ public class CRM {
     }
 
 
-    public SalesRep chooseSalesRep(Scanner scanner) throws NoSuchElementException{
+    public SalesRep chooseSalesRep(Scanner scanner) throws NoSuchElementException {
         System.out.print("Sales Rep id:  ");
         String salesRepId = scanner.nextLine();
         if (!salesRepList.containsKey(salesRepId)) {
@@ -267,20 +210,34 @@ public class CRM {
     }
 
     public void showSalesReps() {
-        try { for (Map.Entry<String, SalesRep> entry : salesRepList.entrySet()) {
-            System.out.println(entry.getValue());
-        }
+        List<SalesRep> salesReps = new ArrayList<>();
+        try {
+            salesReps =  salesRepRepository.findAll();
         } catch (Exception e) {
             System.out.println("\n\nNo SalesReps to show\n\n");
+        }
+        if (salesReps == null || salesReps.size() == 0) {
+            System.out.println("\n\nNo SalesReps to show\n\n");
+        } else {
+            for (SalesRep salesRep : salesReps) {
+                System.out.println(salesRep.toString());
+            }
         }
     }
 
     public void showLeads() {
-        try { for (Map.Entry<String, Lead> entry : leadList.entrySet()) {
-            System.out.println(entry.getValue());
-        }
+        List<Lead> leads = new ArrayList<>();
+        try {
+            leads = leadRepository.findAll();
         } catch (Exception e) {
             System.out.println("\n\nNo Leads to show\n\n");
+        }
+        if (leads == null || leads.size() == 0) {
+            System.out.println("\n\nNo Leads to show\n\n");
+        } else {
+            for (Lead lead : leads) {
+                System.out.println(lead.toString());
+            }
         }
     }
 
@@ -289,13 +246,20 @@ public class CRM {
         try {
             leadId = userChoice.split(" ")[2];
         } catch (ArrayIndexOutOfBoundsException e) {
-        }
-        try {
-            System.out.println(leadList.get(leadId).toString());
-        } catch (NullPointerException e) {
             System.err.println("Not a valid Lead Id.");
         }
-        return leadList.get(leadId);
+        Lead foundLead = null;
+        try {
+            foundLead = leadRepository.findById(leadId).get();
+            if (foundLead == null) {
+                System.out.println(foundLead.toString());
+            } else {
+                System.err.println("Not a valid Lead Id.");
+            }
+        } catch (Exception e) {
+            System.err.println("Not a valid Lead Id.");
+        }
+        return foundLead;
     }
 
     public Contact createContact(Lead lead){
@@ -412,7 +376,6 @@ public class CRM {
             Product productType = typeOfProduct(scanner);
             int productQuantity = quantityOfProduct(scanner);
             SalesRep salesRep = chooseSalesRep(scanner);
-            //falta preguntar que SalesRep asignar a Opportunity
             Opportunity newOpportunity = createOpportunity(productType, productQuantity, contact, salesRep);
             System.out.println("New Opportunity created:\n" + newOpportunity.toString());
             Account account = typeOfAccount(scanner, contact, newOpportunity);
@@ -487,7 +450,7 @@ public class CRM {
                         "\nEnter (2) for Flatbed" +
                         "\nEnter (3) for Box"
         );
-        int productChoice = CRM.verifyIntInput(scanner, 1, 3);
+        int productChoice = verifyIntInput(scanner, 1, 3);
         switch(productChoice){
             case 1:
                 return Product.HYBRID;
@@ -512,7 +475,7 @@ public class CRM {
                         "\nEnter (4) for Medical"+
                         "\nEnter (5) for Other"
         );
-        int productChoice = CRM.verifyIntInput(scanner, 1, 5);
+        int productChoice = verifyIntInput(scanner, 1, 5);
         switch(productChoice){
             case 1:
                 return Industry.PRODUCE;
@@ -542,7 +505,7 @@ public class CRM {
         }
         Industry industryType = typeOfIndustry(scanner);
         System.out.println("Please type the number of employees");
-        int employeeCount = CRM.verifyIntInput(scanner, 1, Integer.MAX_VALUE);
+        int employeeCount = verifyIntInput(scanner, 1, Integer.MAX_VALUE);
         String city = null;
         while (city == null) {
             try {
@@ -585,11 +548,25 @@ public class CRM {
 
 
     public void showOpportunities() {
-        try { for (Map.Entry<String, Opportunity> entry : opportunityList.entrySet()) {
-            System.out.println(entry.getValue());
-        }
+//        try { for (Map.Entry<String, Opportunity> entry : opportunityList.entrySet()) {
+//            System.out.println(entry.getValue());
+//        }
+//        } catch (Exception e) {
+//            System.out.println("\n\nNo Opportunities to show\n\n");
+//        }
+
+        List<Opportunity> opportunities = new ArrayList<>();
+        try {
+            opportunities =  opportunityRepository.findAll();
         } catch (Exception e) {
             System.out.println("\n\nNo Opportunities to show\n\n");
+        }
+        if (opportunities == null || opportunities.size() == 0) {
+            System.out.println("\n\nNo Opportunities to show\n\n");
+        } else {
+            for (Opportunity opportunity : opportunities) {
+                System.out.println(opportunity.toString());
+            }
         }
     }
 
@@ -599,12 +576,14 @@ public class CRM {
             opportunityId = userChoice.split(" ")[2];
         } catch (ArrayIndexOutOfBoundsException e) {
         }
+        Opportunity foundOpportunity = opportunityRepository.findById(opportunityId).get();
         try {
-            System.out.println(opportunityList.get(opportunityId).toString());
-        } catch (NullPointerException e) {
+            System.out.println(foundOpportunity.toString());
+        } catch (Exception e) {
             System.err.println("Not a valid Opportunity Id.");
         }
-        return opportunityList.get(opportunityId);
+        return foundOpportunity;
+
     }
 
     public void showContacts() {
@@ -617,18 +596,29 @@ public class CRM {
     }
 
     public Contact lookupContact(String userChoice) {
-        String contactId = null;
-        try {
-            contactId = userChoice.split(" ")[2];
-        } catch (ArrayIndexOutOfBoundsException e) {
+        String contactId = userChoice.split(" ")[2];
+        Contact foundContact = null;
+        if (contactId.equals(null)) {
+            System.err.println("Need a Contact ID");
+            return null;
+        } else {
+            try {
+                verifyIdIsInt(contactId);
+                foundContact = contactRepository.findById(contactId).get();
+                if (foundContact.getName() != null) {
+                    System.out.println(foundContact.toString());
+                } else {
+                    System.err.println("Not a valid Contact Id.");
+                }
+            } catch (Exception e) {
+                System.err.println("Not a valid Contact Id.");
+            }
+            return foundContact;
         }
-        try {
-            System.out.println(contactList.get(contactId).toString());
-        } catch (NullPointerException e) {
-            System.err.println("Not a valid Contact Id.");
-        }
-        return contactList.get(contactId);
     }
+
+
+
 
     public Account lookupAccount(String userChoice) {
         String accountId = null;
@@ -654,12 +644,14 @@ public class CRM {
     }
 
     public void closeOpportunity(String id, Status status){
-        if (opportunityList.get(id).getProduct() == null) {
+        if (opportunityRepository.findById(id).get() == null) {
             throw new IllegalArgumentException("Not a valid Opportunity ID");
         }
-        opportunityList.get(id).setStatus(status);
+        Opportunity opportunity = opportunityRepository.findById(id).get();
+        opportunity.setStatus(status);
+        opportunityRepository.save(opportunity);
         System.out.println("Status updated\n");
-        System.out.println(opportunityList.get(id));
+        System.out.println(opportunity);
     }
 
     public static int verifyIntInput(Scanner scanner, int min, int max) {
@@ -686,29 +678,45 @@ public class CRM {
     }
 
     public void chooseReportList(Scanner scanner) {
+        List<Object[]> result = new ArrayList<>();
         System.out.println(reports);
         int scannerNum;
-        int reportChoice = CRM.verifyIntInput(scanner, 1, 9);
+        int reportChoice = verifyIntInput(scanner, 1, 9);
         switch (reportChoice) {
             case 1:
                 for (String each : bySalesRep) {
                     System.out.println(each);}
-                scannerNum = CRM.verifyIntInput(scanner, 1, 5);
+                scannerNum = verifyIntInput(scanner, 1, 5);
                 switch (scannerNum){
                     case 1:
-                        System.out.println(leadRepository.findCountGroupBySalesRep().toString());
+                        result = leadRepository.findCountGroupBySalesRep();
+                        for (int i=0; i<result.size(); i++) {
+                            System.out.println(Arrays.toString(result.get(i)));
+                        }
                         break;
                     case 2:
-                        System.out.println(opportunityRepository.findCountGroupBySalesRep().toString());
+                        result = opportunityRepository.findCountGroupBySalesRep();
+                        for (int i=0; i<result.size(); i++) {
+                            System.out.println(Arrays.toString(result.get(i)));
+                        }
                         break;
                     case 3:
-                        System.out.println(opportunityRepository.findCountWithStatusWonGroupBySalesRep().toString());
+                        result = opportunityRepository.findCountWithStatusWonGroupBySalesRep();
+                        for (int i=0; i<result.size(); i++) {
+                            System.out.println(Arrays.toString(result.get(i)));
+                        }
                         break;
                     case 4:
-                        System.out.println(opportunityRepository.findCountWithStatusLostGroupBySalesRep().toString());
+                        result = opportunityRepository.findCountWithStatusLostGroupBySalesRep();
+                        for (int i=0; i<result.size(); i++) {
+                            System.out.println(Arrays.toString(result.get(i)));
+                        }
                         break;
                     case 5:
-                        System.out.println(opportunityRepository.findCountWithStatusOpenGroupBySalesRep().toString());
+                        result = opportunityRepository.findCountWithStatusOpenGroupBySalesRep();
+                        for (int i=0; i<result.size(); i++) {
+                            System.out.println(Arrays.toString(result.get(i)));
+                        }
                         break;
                 }
                 break;
@@ -716,89 +724,151 @@ public class CRM {
                 for (String each : byProduct) {
                     System.out.println(each);
                 }
-                scannerNum = CRM.verifyIntInput(scanner, 1, 4);
+                scannerNum = verifyIntInput(scanner, 1, 4);
                 switch (scannerNum){
                     case 1:
-                        System.out.println(opportunityRepository.findCountGroupByProduct().toString());
+                        result = opportunityRepository.findCountGroupByProduct();
+                        for (int i=0; i<result.size(); i++) {
+                            System.out.println(Arrays.toString(result.get(i)));
+                        }
                         break;
                     case 2:
-                        System.out.println(opportunityRepository.findCountWithStatusWonGroupByProduct().toString());
+                        result = opportunityRepository.findCountWithStatusWonGroupByProduct();
+                        for (int i=0; i<result.size(); i++) {
+                            System.out.println(Arrays.toString(result.get(i)));
+                        }
                         break;
                     case 3:
-                        System.out.println(opportunityRepository.findCountWithStatusLostGroupByProduct().toString());
+                        result = opportunityRepository.findCountWithStatusLostGroupByProduct();
+                        for (int i=0; i<result.size(); i++) {
+                            System.out.println(Arrays.toString(result.get(i)));
+                        }
                         break;
                     case 4:
-                        System.out.println(opportunityRepository.findCountWithStatusOpenGroupByProduct().toString());
+                        result = opportunityRepository.findCountWithStatusOpenGroupByProduct();
+                        for (int i=0; i<result.size(); i++) {
+                            System.out.println(Arrays.toString(result.get(i)));
+                        }
                         break;
+
                 }
+                break;
             case 3:
                 for (String each : byCountry) {
                     System.out.println(each);
                 }
-                scannerNum = CRM.verifyIntInput(scanner, 1, 4);
+                scannerNum = verifyIntInput(scanner, 1, 4);
                 switch (scannerNum){
                     case 1:
-                        System.out.println(opportunityRepository.findCountGroupByCountry().toString());
+                        result = opportunityRepository.findCountGroupByCountry();
+                        for (int i=0; i<result.size(); i++) {
+                            System.out.println(Arrays.toString(result.get(i)));
+                        }
                         break;
                     case 2:
-                        System.out.println(opportunityRepository.findCountWithStatusWonGroupByCountry().toString());
+                        result = opportunityRepository.findCountWithStatusWonGroupByCountry();
+                        for (int i=0; i<result.size(); i++) {
+                            System.out.println(Arrays.toString(result.get(i)));
+                        }
                         break;
                     case 3:
+                        result = opportunityRepository.findCountWithStatusLostGroupByCountry();
+                        for (int i=0; i<result.size(); i++) {
+                            System.out.println(Arrays.toString(result.get(i)));
+                        }
                         System.out.println(opportunityRepository.findCountWithStatusLostGroupByCountry().toString());
                         break;
                     case 4:
-                        System.out.println(opportunityRepository.findCountWithStatusOpenGroupByCountry().toString());
+                        result = opportunityRepository.findCountWithStatusOpenGroupByCountry();
+                        for (int i=0; i<result.size(); i++) {
+                            System.out.println(Arrays.toString(result.get(i)));
+                        }
                         break;
                 }
+                break;
             case 4:
                 for (String each : byCity) {
                     System.out.println(each);
                 }
-                scannerNum = CRM.verifyIntInput(scanner, 1, 4);
+                scannerNum = verifyIntInput(scanner, 1, 4);
                 switch (scannerNum){
                     case 1:
-                        System.out.println(opportunityRepository.countOpportunitiesByCity("a").toString());
+                        result = opportunityRepository.findCountGroupByCity();
+                        for (int i=0; i<result.size(); i++) {
+                            System.out.println(Arrays.toString(result.get(i)));
+                        }
                         break;
                     case 2:
-                        System.out.println(opportunityRepository.countOpportunitiesByCityWithStatusCloseWon("b").toString());
+                        result = opportunityRepository.findCountWithStatusWonGroupByCity();
+                        for (int i=0; i<result.size(); i++) {
+                            System.out.println(Arrays.toString(result.get(i)));
+                        }
                         break;
                     case 3:
-                        System.out.println(opportunityRepository.countOpportunitiesByCityWithStatusCloseLost("c").toString());
+                        result = opportunityRepository.findCountWithStatusLostGroupByCity();
+                        for (int i=0; i<result.size(); i++) {
+                            System.out.println(Arrays.toString(result.get(i)));
+                        }
                         break;
                     case 4:
-                        System.out.println(opportunityRepository.countOpportunitiesByCityWithStatusOpen("d").toString());
+                        result = opportunityRepository.findCountWithStatusOpenGroupByCity();
+                        for (int i=0; i<result.size(); i++) {
+                            System.out.println(Arrays.toString(result.get(i)));
+                        }
                         break;
                 }
+                break;
             case 5:
                 for (String each : byIndustry) {
                     System.out.println(each);
                 }
-                scannerNum = CRM.verifyIntInput(scanner, 1, 4);
+                scannerNum = verifyIntInput(scanner, 1, 4);
                 switch (scannerNum){
                     case 1:
-                        System.out.println(opportunityRepository.findCountGroupByIndustry().toString());
+                        result = opportunityRepository.findCountGroupByIndustry();
+                        for (int i=0; i<result.size(); i++) {
+                            System.out.println(Arrays.toString(result.get(i)));
+                        }
                         break;
                     case 2:
-                        System.out.println(opportunityRepository.findCountWithStatusWonGroupByIndustry().toString());
+                        result = opportunityRepository.findCountWithStatusWonGroupByIndustry();
+                        for (int i=0; i<result.size(); i++) {
+                            System.out.println(Arrays.toString(result.get(i)));
+                        }
                         break;
                     case 3:
-                        System.out.println(opportunityRepository.findCountWithStatusLostGroupByIndustry().toString());
+                        result = opportunityRepository.findCountWithStatusLostGroupByIndustry();
+                        for (int i=0; i<result.size(); i++) {
+                            System.out.println(Arrays.toString(result.get(i)));
+                        }
                         break;
                     case 4:
-                        System.out.println(opportunityRepository.findCountWithStatusOpenGroupByIndustry().toString());
+                        result = opportunityRepository.findCountWithStatusOpenGroupByIndustry();
+                        for (int i=0; i<result.size(); i++) {
+                            System.out.println(Arrays.toString(result.get(i)));
+                        }
                         break;
                 }
+                break;
             case 6:
                 for (String each : byEmployeeCountStates) {
                     System.out.println(each);
                 }
-                scannerNum = CRM.verifyIntInput(scanner, 1, 4);
+                scannerNum = verifyIntInput(scanner, 1, 4);
                 switch (scannerNum){
                     case 1:
-                        System.out.println(accountRepository.findMeanEmployeeCount());
+                        System.err.println("No Accounts");
                         break;
                     case 2:
-                        System.out.println(accountRepository.findMedianEmployeeCount());
+                        List<Integer> employeeCounts = accountRepository.findEmployeeCounts();
+                        Collections.sort(employeeCounts);
+                        if (employeeCounts.size() % 2 == 1)
+                            System.out.println(employeeCounts.get((employeeCounts.size() + 1) / 2 - 1));
+                        else {
+                            double lower = employeeCounts.get(employeeCounts.size() / 2 - 1);
+                            double upper = employeeCounts.get(employeeCounts.size() / 2);
+                            System.out.println((lower + upper) / 2.0);
+                        }
                         break;
                     case 3:
                         System.out.println(accountRepository.findMaxEmployeeCount());
@@ -807,11 +877,12 @@ public class CRM {
                         System.out.println(accountRepository.findMinEmployeeCount());
                         break;
                 }
+                break;
             case 7:
                 for (String each : byQuantityStates) {
                     System.out.println(each);
                 }
-                scannerNum = CRM.verifyIntInput(scanner, 1, 4);
+                scannerNum = verifyIntInput(scanner, 1, 4);
                 switch (scannerNum){
                     case 1:
                         System.out.println("opportunityRepository.1().toString()");
@@ -826,26 +897,46 @@ public class CRM {
                         System.out.println("opportunityRepository.4().toString()");
                         break;
                 }
+                break;
             case 8:
                 for (String each : byOpportunityStates) {
                     System.out.println(each);
                 }
-                scannerNum = CRM.verifyIntInput(scanner, 1, 4);
+                scannerNum = verifyIntInput(scanner, 1, 4);
+                List<Integer> list = new ArrayList<>();
+                List<Object[]> objectArray = opportunityRepository.countMeanOfOpportunitiesAssociatedToAccount();
+                for(int i = 0; i < opportunityRepository.countMeanOfOpportunitiesAssociatedToAccount().size(); i++){
+                    list.add((Integer) objectArray.get(i)[1]);
+                }
                 switch (scannerNum){
                     case 1:
-                        System.out.println(opportunityRepository.countMeanOfOpportunitiesAssociatedToAccount().toString());
+                        Integer sum = 0;
+                        for(int i = 0; i < list.size(); i++){
+                            sum += list.get(i);
+                        }
+                        Integer mean = sum / list.size();
+                        System.out.println(mean);
                         break;
                     case 2:
-                        System.out.println("opportunityRepository.().toString()");
+                        Collections.sort(list);
+                        if (list.size() % 2 == 1)
+                            System.out.println(list.get((list.size() + 1) / 2 - 1));
+                        else {
+                            double lower = list.get(list.size() / 2 - 1);
+                            double upper = list.get(list.size() / 2);
+                            System.out.println((lower + upper) / 2.0);
+                        }
                         break;
                     case 3:
-                        System.out.println(opportunityRepository.maxOpportunitiesAssociatedToAccount().toString());
+                        Collections.sort(list);
+                        System.out.println(list.get(list.size()-1));
                         break;
                     case 4:
-                        System.out.println(opportunityRepository.minOpportunitiesAssociatedToAccount().toString());
+                        Collections.sort(list);
+                        System.out.println(list.get(0));
                         break;
                 }
+                break;
         }
     }
 }
-*/
