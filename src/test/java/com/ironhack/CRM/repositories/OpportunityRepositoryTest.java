@@ -99,19 +99,6 @@ class OpportunityRepositoryTest {
                 new Opportunity(Product.BOX, 4, contacts.get(9), salesReps.get(2),accounts.get(6))
         ));
 
-//        opportunities = opportunityRepository.saveAll(List.of(
-//                new Opportunity(Product.BOX, 10, contacts.get(0), salesReps.get(0)),
-//                new Opportunity(Product.FLATBED, 1, contacts.get(1), salesReps.get(0)),
-//                new Opportunity(Product.BOX, 15, contacts.get(2), salesReps.get(2)),
-//                new Opportunity(Product.HYBRID, 2, contacts.get(3), salesReps.get(1)),
-//                new Opportunity(Product.BOX, 5, contacts.get(4), salesReps.get(0)),
-//                new Opportunity(Product.BOX, 50, contacts.get(5), salesReps.get(0)),
-//                new Opportunity(Product.BOX, 4, contacts.get(6), salesReps.get(1)),
-//                new Opportunity(Product.BOX, 4, contacts.get(7), salesReps.get(0)),
-//                new Opportunity(Product.BOX, 4, contacts.get(8), salesReps.get(1)),
-//                new Opportunity(Product.BOX, 4, contacts.get(9), salesReps.get(2))
-//        ));
-
 
     }
 
@@ -174,4 +161,66 @@ class OpportunityRepositoryTest {
         assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusOpenGroupByProduct().get(1)[1]);
         assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusOpenGroupByProduct().get(2)[1]);
     }
+
+    @Test
+    public void findCountGroupByCity(){
+        assertEquals(4, opportunityRepository.findCountGroupByCity().size());
+    }
+
+    @Test
+    public void findCountWithStatusWonGroupByCity(){
+        Opportunity opportunity1 = opportunities.get(0);
+        Opportunity opportunity2 = opportunities.get(1);
+        Opportunity opportunity3 = opportunities.get(2);
+        opportunity1.setStatus(Status.CLOSED_WON);
+        opportunity2.setStatus(Status.CLOSED_WON);
+        opportunity3.setStatus(Status.CLOSED_WON);
+        opportunityRepository.saveAll(List.of(opportunity1, opportunity2, opportunity3));
+        assertEquals(3, opportunityRepository.findCountWithStatusWonGroupByCity().size());
+    }
+
+    @Test
+    public void findCountWithStatusLostGroupByCity(){
+        Opportunity opportunity1 = opportunities.get(0);
+        Opportunity opportunity2 = opportunities.get(1);
+        Opportunity opportunity3 = opportunities.get(2);
+        Opportunity opportunity4 = opportunities.get(4);
+        opportunity1.setStatus(Status.CLOSED_LOST);
+        opportunity2.setStatus(Status.CLOSED_LOST);
+        opportunity3.setStatus(Status.CLOSED_LOST);
+        opportunity4.setStatus(Status.CLOSED_WON);
+        opportunityRepository.saveAll(List.of(opportunity1, opportunity2, opportunity3, opportunity4));
+        assertEquals(3, opportunityRepository.findCountWithStatusLostGroupByCity().size());
+    }
+
+    @Test
+    public void findCountWithStatusOpenGroupByCity(){
+        Opportunity opportunity1 = opportunities.get(0);
+        Opportunity opportunity2 = opportunities.get(1);
+        Opportunity opportunity3 = opportunities.get(2);
+        Opportunity opportunity4 = opportunities.get(4);
+        opportunity1.setStatus(Status.OPEN);
+        opportunity2.setStatus(Status.OPEN);
+        opportunity3.setStatus(Status.OPEN);
+        opportunity4.setStatus(Status.OPEN);
+        opportunityRepository.saveAll(List.of(opportunity1, opportunity2, opportunity3, opportunity4));
+        assertEquals(3, opportunityRepository.findCountWithStatusOpenGroupByCity().size());
+    }
+
+    @Test
+    public void countMeanOfOpportunitiesAssociatedToAccount(){
+        assertEquals((double) 3.33, opportunityRepository.countMeanOfOpportunitiesAssociatedToAccount());
+    }
+
+    @Test
+    public void maxOpportunitiesAssociatedToAccount(){
+        assertEquals(5, opportunityRepository.maxOpportunitiesAssociatedToAccount());
+    }
+
+    @Test
+    public void minOpportunitiesAssociatedToAccount(){
+        assertEquals(2, opportunityRepository.minOpportunitiesAssociatedToAccount());
+    }
+
+
 }
