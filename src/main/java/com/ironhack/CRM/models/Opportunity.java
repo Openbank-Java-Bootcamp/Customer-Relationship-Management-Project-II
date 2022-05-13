@@ -50,6 +50,16 @@ public class Opportunity {
         this.salesRep = salesRep;
     }
 
+    public Opportunity(Product product, int quantity, Contact decisionMaker, SalesRep salesRep, Account account) {
+        this.id = createID();
+        this.product = product;
+        this.quantity = quantity;
+        this.decisionMaker = decisionMaker;
+        this.setStatus(Status.OPEN);
+        this.salesRep = salesRep;
+        this.account = account;
+    }
+
 
     //SETTERS
 

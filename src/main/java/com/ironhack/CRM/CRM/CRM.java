@@ -10,6 +10,7 @@ import com.ironhack.CRM.repositories.AccountRepository;
 import com.ironhack.CRM.repositories.LeadRepository;
 import com.ironhack.CRM.repositories.OpportunityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.regex.Matcher;

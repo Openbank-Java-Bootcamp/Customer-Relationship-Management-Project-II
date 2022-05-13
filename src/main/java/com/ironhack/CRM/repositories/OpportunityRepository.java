@@ -13,20 +13,21 @@ public interface OpportunityRepository extends JpaRepository<Opportunity, String
 
     //By SalesRep:
     //“Report Opportunity by SalesRep”
-    @Query(value = "SELECT salesRep, COUNT(*) FROM opportunity GROUP BY salesRep", nativeQuery = true)
+    @Query(value = "SELECT sales_rep_id, COUNT(*) FROM opportunity GROUP BY sales_rep_id", nativeQuery = true)
     List<Object[]> findCountGroupBySalesRep();
 
     //“Report CLOSED-WON by SalesRep”
-    @Query(value = "SELECT salesRep, COUNT(*) FROM opportunity WHERE status = 'CLOSED_WON' GROUP BY salesRep", nativeQuery = true)
+    @Query(value = "SELECT sales_rep_id, COUNT(*) FROM opportunity WHERE status = 'CLOSED_WON' GROUP BY sales_rep_id", nativeQuery = true)
     List<Object[]> findCountWithStatusWonGroupBySalesRep();
 
     //“Report CLOSED-LOST by SalesRep”
-    @Query(value = "SELECT salesRep, COUNT(*) FROM opportunity WHERE status = 'CLOSED_LOST' GROUP BY salesRep", nativeQuery = true)
+    @Query(value = "SELECT sales_rep_id, COUNT(*) FROM opportunity WHERE status = 'CLOSED_LOST' GROUP BY sales_rep_id", nativeQuery = true)
     List<Object[]> findCountWithStatusLostGroupBySalesRep();
 
     //"Report OPEN by SalesRep"
-    @Query(value = "SELECT salesRep, COUNT(*) FROM opportunity WHERE status = 'OPEN' GROUP BY salesRep", nativeQuery = true)
+    @Query(value = "SELECT sales_rep_id, COUNT(*) FROM opportunity WHERE status = 'OPEN' GROUP BY sales_rep_id", nativeQuery = true)
     List<Object[]> findCountWithStatusOpenGroupBySalesRep();
+
 
 
 
@@ -69,19 +70,19 @@ public interface OpportunityRepository extends JpaRepository<Opportunity, String
 
     //By Industry:
     //“Report Opportunity by Industry”
-    @Query(value = "SELECT industry, COUNT(*) FROM opportunity GROUP BY industry", nativeQuery = true)
+    @Query(value = "SELECT account.industry, COUNT(*) FROM opportunity, account WHERE opportunity.account_id = account.id GROUP BY account.industry ORDER BY account.industry", nativeQuery = true)
     List<Object[]> findCountGroupByIndustry();
 
     //"Report CLOSED-WON by Industry"
-    @Query(value = "SELECT industry, COUNT(*) FROM opportunity WHERE status = 'CLOSED_WON' GROUP BY industry", nativeQuery = true)
+    @Query(value = "SELECT account.industry, COUNT(*) FROM opportunity, account WHERE opportunity.account_id = account.id AND status = 'CLOSED_WON' GROUP BY account.industry ORDER BY account.industry", nativeQuery = true)
     List<Object[]> findCountWithStatusWonGroupByIndustry();
 
     //"Report CLOSED-LOST by Industry"
-    @Query(value = "SELECT industry, COUNT(*) FROM opportunity WHERE status = 'CLOSED_WON' GROUP BY industry", nativeQuery = true)
+    @Query(value = "SELECT account.industry, COUNT(*) FROM opportunity, account WHERE opportunity.account_id = account.id AND status = 'CLOSED_LOST' GROUP BY account.industry ORDER BY account.industry", nativeQuery = true)
     List<Object[]> findCountWithStatusLostGroupByIndustry();
 
     //"Report OPEN by Industry"
-    @Query(value = "SELECT industry, COUNT(*) FROM opportunity WHERE status = 'OPEN' GROUP BY industry", nativeQuery = true)
+    @Query(value = "SELECT account.industry, COUNT(*) FROM opportunity, account WHERE opportunity.account_id = account.id AND status = 'OPEN' GROUP BY account.industry ORDER BY industry", nativeQuery = true)
     List<Object[]> findCountWithStatusOpenGroupByIndustry();
 
 
