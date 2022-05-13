@@ -88,19 +88,17 @@ class OpportunityRepositoryTest {
 
         opportunities = opportunityRepository.saveAll(List.of(
 
+                new Opportunity(Product.BOX, 10, contacts.get(0), salesReps.get(0),accounts.get(0)),
+                new Opportunity(Product.FLATBED, 1, contacts.get(1), salesReps.get(0),accounts.get(2)),
+                new Opportunity(Product.BOX, 15, contacts.get(2), salesReps.get(2),accounts.get(5)),
+                new Opportunity(Product.HYBRID, 2, contacts.get(3), salesReps.get(1),accounts.get(3)),
+                new Opportunity(Product.BOX, 5, contacts.get(4), salesReps.get(0),accounts.get(4)),
+                new Opportunity(Product.BOX, 50, contacts.get(5), salesReps.get(0),accounts.get(2)),
+                new Opportunity(Product.BOX, 4, contacts.get(6), salesReps.get(1),accounts.get(1)),
+                new Opportunity(Product.BOX, 4, contacts.get(7), salesReps.get(0),accounts.get(2)),
+                new Opportunity(Product.BOX, 4, contacts.get(8), salesReps.get(1),accounts.get(3)),
+                new Opportunity(Product.BOX, 4, contacts.get(9), salesReps.get(2),accounts.get(6))
 
-
-        new Opportunity(Product.BOX, 10, contacts.get(0), salesReps.get(0), accounts.get(0)),
-
-        new Opportunity(Product.FLATBED, 1, contacts.get(1), salesReps.get(0), accounts.get(2)),
-                new Opportunity(Product.BOX, 15, contacts.get(2), salesReps.get(2), accounts.get(5)),
-                new Opportunity(Product.HYBRID, 2, contacts.get(3), salesReps.get(1), accounts.get(3)),
-                new Opportunity(Product.BOX, 5, contacts.get(4), salesReps.get(0), accounts.get(4)),
-                new Opportunity(Product.BOX, 50, contacts.get(5), salesReps.get(0), accounts.get(2)),
-                new Opportunity(Product.BOX, 4, contacts.get(6), salesReps.get(1), accounts.get(1)),
-                new Opportunity(Product.BOX, 4, contacts.get(7), salesReps.get(0), accounts.get(2)),
-                new Opportunity(Product.BOX, 4, contacts.get(8), salesReps.get(1), accounts.get(3)),
-                new Opportunity(Product.BOX, 4, contacts.get(9), salesReps.get(2), accounts.get(6))
         ));
 
 
@@ -167,7 +165,10 @@ class OpportunityRepositoryTest {
     }
 
 
-
+    @Test
+    public void findCountGroupByCity(){
+        assertEquals(4, opportunityRepository.findCountGroupByCity().size());
+    }
 
     @Test
     public void findCountWithStatusWonGroupByCity(){
@@ -225,6 +226,107 @@ class OpportunityRepositoryTest {
     public void minOpportunitiesAssociatedToAccount(){
         assertEquals(2, opportunityRepository.minOpportunitiesAssociatedToAccount());
     }
+
+
+    @Test
+    public void findCountGroupBySalesRep() {
+        assertEquals(3, opportunityRepository.findCountGroupBySalesRep().size());
+        assertEquals(BigInteger.valueOf(5), opportunityRepository.findCountGroupBySalesRep().get(0)[1]);
+        assertEquals(BigInteger.valueOf(3), opportunityRepository.findCountGroupBySalesRep().get(1)[1]);
+        assertEquals(BigInteger.valueOf(2), opportunityRepository.findCountGroupBySalesRep().get(2)[1]);
+    }
+    @Test
+    public void findCountWithStatusOpenGroupByBySalesRep() {
+        Opportunity opportunity10 = opportunities.get(9);
+        Opportunity opportunity9 = opportunities.get(8);
+        opportunity10.setStatus(Status.CLOSED_WON);
+        opportunity9.setStatus(Status.CLOSED_LOST);
+        opportunityRepository.saveAll(List.of(opportunity10, opportunity9));
+        assertEquals(3, opportunityRepository.findCountWithStatusOpenGroupBySalesRep().size());
+        assertEquals(BigInteger.valueOf(5), opportunityRepository.findCountWithStatusOpenGroupBySalesRep().get(0)[1]);
+        assertEquals(BigInteger.valueOf(2), opportunityRepository.findCountWithStatusOpenGroupBySalesRep().get(1)[1]);
+        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusOpenGroupBySalesRep().get(2)[1]);
+    }
+
+    @Test
+    public void findCountWithStatusWonGroupBySalesRep() {
+        Opportunity opportunity1 = opportunities.get(0);
+        Opportunity opportunity2 = opportunities.get(2);
+        Opportunity opportunity3 = opportunities.get(3);
+        opportunity1.setStatus(Status.CLOSED_WON);
+        opportunity2.setStatus(Status.CLOSED_WON);
+        opportunity3.setStatus(Status.CLOSED_WON);
+        opportunityRepository.saveAll(List.of(opportunity1, opportunity2, opportunity3));
+        assertEquals(3, opportunityRepository.findCountWithStatusWonGroupBySalesRep().size());
+        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusWonGroupBySalesRep().get(0)[1]);
+        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusWonGroupBySalesRep().get(1)[1]);
+        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusWonGroupBySalesRep().get(2)[1]);
+    }
+    @Test
+    public void findCountWithStatusLostGroupBySalesRep() {
+        Opportunity opportunity1 = opportunities.get(0);
+        Opportunity opportunity2 = opportunities.get(1);
+        Opportunity opportunity4 = opportunities.get(3);
+        opportunity1.setStatus(Status.CLOSED_LOST);
+        opportunity2.setStatus(Status.CLOSED_LOST);
+        opportunity4.setStatus(Status.CLOSED_LOST);
+        opportunityRepository.saveAll(List.of(opportunity1, opportunity2, opportunity4));
+        assertEquals(2, opportunityRepository.findCountWithStatusLostGroupBySalesRep().size());
+        assertEquals(BigInteger.valueOf(2), opportunityRepository.findCountWithStatusLostGroupBySalesRep().get(0)[1]);
+        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusLostGroupBySalesRep().get(1)[1]);
+    }
+
+    @Test
+    public void findCountGroupByIndustry() {
+        assertEquals(4, opportunityRepository.findCountGroupByIndustry().size());
+        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountGroupByIndustry().get(0)[1]);
+        assertEquals(BigInteger.valueOf(5), opportunityRepository.findCountGroupByIndustry().get(1)[1]);
+        assertEquals(BigInteger.valueOf(2), opportunityRepository.findCountGroupByIndustry().get(2)[1]);
+        assertEquals(BigInteger.valueOf(2), opportunityRepository.findCountGroupByIndustry().get(3)[1]);
+    }
+    @Test
+    public void findCountWithStatusOpenGroupByByIndustry() {
+        Opportunity opportunity10 = opportunities.get(9);
+        Opportunity opportunity9 = opportunities.get(8);
+        opportunity10.setStatus(Status.CLOSED_WON);
+        opportunity9.setStatus(Status.CLOSED_LOST);
+        opportunityRepository.saveAll(List.of(opportunity10, opportunity9));
+        assertEquals(4, opportunityRepository.findCountWithStatusOpenGroupByIndustry().size());
+        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusOpenGroupByIndustry().get(0)[1]);
+        assertEquals(BigInteger.valueOf(4), opportunityRepository.findCountWithStatusOpenGroupByIndustry().get(1)[1]);
+        assertEquals(BigInteger.valueOf(2), opportunityRepository.findCountWithStatusOpenGroupByIndustry().get(2)[1]);
+        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusOpenGroupByIndustry().get(3)[1]);
+    }
+
+    @Test
+    public void findCountWithStatusWonGroupByIndustry() {
+        Opportunity opportunity1 = opportunities.get(0);
+        Opportunity opportunity2 = opportunities.get(2);
+        Opportunity opportunity3 = opportunities.get(3);
+        opportunity1.setStatus(Status.CLOSED_WON);
+        opportunity2.setStatus(Status.CLOSED_WON);
+        opportunity3.setStatus(Status.CLOSED_WON);
+        opportunityRepository.saveAll(List.of(opportunity1, opportunity2, opportunity3));
+        assertEquals(3, opportunityRepository.findCountWithStatusWonGroupByIndustry().size());
+        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusWonGroupByIndustry().get(0)[1]);
+        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusWonGroupByIndustry().get(1)[1]);
+        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusWonGroupByIndustry().get(2)[1]);
+    }
+    @Test
+    public void findCountWithStatusLostGroupByIndustry() {
+        Opportunity opportunity1 = opportunities.get(0);
+        Opportunity opportunity2 = opportunities.get(1);
+        Opportunity opportunity4 = opportunities.get(3);
+        opportunity1.setStatus(Status.CLOSED_LOST);
+        opportunity2.setStatus(Status.CLOSED_LOST);
+        opportunity4.setStatus(Status.CLOSED_LOST);
+        opportunityRepository.saveAll(List.of(opportunity1, opportunity2, opportunity4));
+        assertEquals(2, opportunityRepository.findCountWithStatusLostGroupByIndustry().size());
+        assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusLostGroupByIndustry().get(0)[1]);
+        assertEquals(BigInteger.valueOf(2), opportunityRepository.findCountWithStatusLostGroupByIndustry().get(1)[1]);
+    }
+
+
 
 
 
