@@ -13,6 +13,7 @@ import java.util.List;
 @Component
 public interface LeadRepository extends JpaRepository<Lead, String> {
 
+
     @Query(value = "SELECT sales_rep.name, COUNT(*) FROM _lead JOIN sales_rep ON _lead.sales_rep_id = sales_rep.id GROUP BY sales_rep.name", nativeQuery = true)
     List<Object[]> findCountGroupBySalesRep();
 }

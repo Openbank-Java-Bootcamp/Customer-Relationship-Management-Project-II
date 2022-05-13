@@ -52,7 +52,7 @@ public class CRM {
             //"Enter LOOKUP ACCOUNT along with the Account ID to see a particular Account.\n" +
             "Enter " + ConsoleColors.BLUE + "CLOSE-WON <id>" + ConsoleColors.RESET + " to close an won Opportunity.\n" +
             "Enter " + ConsoleColors.BLUE + "CLOSE-LOST <id>" + ConsoleColors.RESET + " to close a lost Opportunity.\n" +
-            "Enter " + ConsoleColors.BLUE + "REPORTS" + ConsoleColors.RESET + " to generate reports.\n" +
+            "Enter " + ConsoleColors.BLUE + "REPORTS" + ConsoleColors.RESET + " to get to Reports menu.\n" +
             "Enter " + ConsoleColors.RED + "EXIT" + ConsoleColors.RESET + " to exit.\n";
 
 
@@ -885,16 +885,17 @@ public class CRM {
                 scannerNum = verifyIntInput(scanner, 1, 4);
                 switch (scannerNum){
                     case 1:
-                        System.out.println("opportunityRepository.1().toString()");
+                        System.out.println(opportunityRepository.findMeanProductCount());
                         break;
                     case 2:
-                        System.out.println("opportunityRepository.2().toString()");
+                        System.out.println(opportunityRepository.findMedianProductCount());
                         break;
                     case 3:
-                        System.out.println("opportunityRepository.3().toString()");
+                        System.out.println(opportunityRepository.findMaxEmployeeCount());
                         break;
                     case 4:
-                        System.out.println("opportunityRepository.4().toString()");
+                        System.out.println(opportunityRepository.findMinProductCount());
+
                         break;
                 }
                 break;

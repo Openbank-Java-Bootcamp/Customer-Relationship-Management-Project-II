@@ -51,6 +51,7 @@ public class Opportunity {
     }
 
     public Opportunity(Product product, int quantity, Contact decisionMaker, SalesRep salesRep, Account account) {
+        this.id = createID();
         this.product = product;
         this.quantity = quantity;
         this.decisionMaker = decisionMaker;
@@ -58,7 +59,10 @@ public class Opportunity {
         this.salesRep = salesRep;
         this.account = account;
     }
-//SETTERS
+
+
+
+    //SETTERS
 
     public void setProduct(Product product) {
         this.product = product;

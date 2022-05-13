@@ -162,6 +162,7 @@ class OpportunityRepositoryTest {
         assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusOpenGroupByProduct().get(2)[1]);
     }
 
+
     @Test
     public void findCountGroupByCity(){
         assertEquals(3, opportunityRepository.findCountGroupByCity().size());
@@ -356,4 +357,5 @@ class OpportunityRepositoryTest {
     public void findMinProductCount() {
         assertEquals(2, opportunityRepository.findMinProductCount());
     }
+
 }

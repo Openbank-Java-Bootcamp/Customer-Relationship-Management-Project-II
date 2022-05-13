@@ -32,6 +32,7 @@ public interface OpportunityRepository extends JpaRepository<Opportunity, String
     List<Object[]> findCountWithStatusOpenGroupBySalesRep();
 
 
+
 //By Product:
 //“Report Opportunity by the product”
 @Query(value = "SELECT product, COUNT(*) FROM opportunity GROUP BY product", nativeQuery = true)
@@ -66,12 +67,8 @@ public interface OpportunityRepository extends JpaRepository<Opportunity, String
     List<Object[]> findCountWithStatusLostGroupByCountry();
 
     //Report OPEN by country
-
     @Query(value = "SELECT account.country, COUNT(*) FROM opportunity, account WHERE opportunity.account_id = account.id AND status = 'OPEN' GROUP BY account.country ORDER BY country", nativeQuery = true)
     List<Object[]> findCountWithStatusOpenGroupByCountry();
-
-
-
 
     //By Industry:
     //“Report Opportunity by Industry”
@@ -94,11 +91,13 @@ public interface OpportunityRepository extends JpaRepository<Opportunity, String
 
     //By Quantity:
 
+
     //By Quantity:
 
     // Mean quantity of products
     @Query(value = "SELECT AVG(product) FROM opportunity", nativeQuery = true)
     double findMeanProductCount();
+
 
     // Median quantity of products
     @Query(value = "SELECT AVG(aa.product) as median" +
@@ -135,9 +134,11 @@ public interface OpportunityRepository extends JpaRepository<Opportunity, String
     @Query(value = "SELECT account.city, COUNT(*) FROM opportunity, account WHERE opportunity.account_id = account.id AND status = 'OPEN' GROUP BY account.city", nativeQuery = true)
     List<Object[]> findCountWithStatusOpenGroupByCity();
 
+
     //OPPORTUNITY
     @Query(value = "SELECT account.id, count(opportunity.id) FROM opportunity join account on opportunity.account_id = account.id GROUP BY account.id", nativeQuery = true)
     List<Object[]> countMeanOfOpportunitiesAssociatedToAccount();
+
 
 
 }
