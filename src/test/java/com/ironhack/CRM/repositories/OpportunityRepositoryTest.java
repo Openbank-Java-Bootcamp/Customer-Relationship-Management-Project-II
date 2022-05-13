@@ -86,6 +86,7 @@ class OpportunityRepositoryTest {
                 new Opportunity(Product.BOX, 4, contacts.get(9), salesReps.get(2))
         ));
 
+
 //        accounts = accountRepository.saveAll(List.of(
 //                new Account(Industry.ECOMMERCE, 150, "Valencia", "Spain"),
 //                new Account(Industry.MEDICAL, 15, "Madrid", "Spain"),
@@ -159,4 +160,7 @@ class OpportunityRepositoryTest {
         assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusOpenGroupByProduct().get(1)[1]);
         assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusOpenGroupByProduct().get(2)[1]);
     }
+
+
+
 }
