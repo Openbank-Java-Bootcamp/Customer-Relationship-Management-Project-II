@@ -87,6 +87,10 @@ class OpportunityRepositoryTest {
         ));
 
         opportunities = opportunityRepository.saveAll(List.of(
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5763385f0d3302a848c03233c4a7eac0d79ce8ae
                 new Opportunity(Product.BOX, 10, contacts.get(0), salesReps.get(0),accounts.get(0)),
                 new Opportunity(Product.FLATBED, 1, contacts.get(1), salesReps.get(0),accounts.get(2)),
                 new Opportunity(Product.BOX, 15, contacts.get(2), salesReps.get(2),accounts.get(5)),
@@ -97,6 +101,10 @@ class OpportunityRepositoryTest {
                 new Opportunity(Product.BOX, 4, contacts.get(7), salesReps.get(0),accounts.get(2)),
                 new Opportunity(Product.BOX, 4, contacts.get(8), salesReps.get(1),accounts.get(3)),
                 new Opportunity(Product.BOX, 4, contacts.get(9), salesReps.get(2),accounts.get(6))
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5763385f0d3302a848c03233c4a7eac0d79ce8ae
         ));
 
 
@@ -162,6 +170,10 @@ class OpportunityRepositoryTest {
         assertEquals(BigInteger.valueOf(1), opportunityRepository.findCountWithStatusOpenGroupByProduct().get(2)[1]);
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5763385f0d3302a848c03233c4a7eac0d79ce8ae
     @Test
     public void findCountGroupByCity(){
         assertEquals(3, opportunityRepository.findCountGroupByCity().size());
@@ -356,4 +368,9 @@ class OpportunityRepositoryTest {
     public void findMinProductCount() {
         assertEquals(2, opportunityRepository.findMinProductCount());
     }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 5763385f0d3302a848c03233c4a7eac0d79ce8ae
 }
