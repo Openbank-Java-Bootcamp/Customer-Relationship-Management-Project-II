@@ -92,14 +92,24 @@ public interface OpportunityRepository extends JpaRepository<Opportunity, String
     //By Quantity:
 
     // Mean quantity of products
-
+    @Query(value = "SELECT AVG(product) FROM opportunity", nativeQuery = true)
+    double findMeanProductCount();
 
     // Median quantity of products
-
+    @Query(value = "SELECT AVG(aa.product) as median" +
+            " FROM (" +
+            "SELECT a.product, @rownum:=@rownum+1 as `row_number`, @total_rows:=@rownum" +
+            " FROM opportunity a, (SELECT @rownum:=0) r" +
+            " WHERE a.product is NOT NULL" +
+            " ORDER BY a.product) as aa" +
+            " WHERE aa.row_number IN (FLOOR((@total_rows+1)/2), FLOOR((@total_rows+2)/2));", nativeQuery = true)
+    int findMedianProductCount();
     // Maximum quantity of products
-
+    @Query(value = "SELECT MAX(product) FROM opportunity", nativeQuery = true)
+    int findMaxEmployeeCount();
     // Minimum quantity of products
-
+    @Query(value = "SELECT MIN(product) FROM opportunity", nativeQuery = true)
+    int findMinProductCount();
 
     //CITY
     //“Report Opportunity by City”
