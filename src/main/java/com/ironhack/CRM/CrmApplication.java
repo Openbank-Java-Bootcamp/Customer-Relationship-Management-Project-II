@@ -1,7 +1,7 @@
 package com.ironhack.CRM;
 
 
-import com.ironhack.CRM.CRM.CRM2;
+import com.ironhack.CRM.CRM.CRM;
 import com.ironhack.CRM.ConsoleColors.ConsoleColors;
 import com.ironhack.CRM.enums.Industry;
 import com.ironhack.CRM.enums.Product;
@@ -26,7 +26,7 @@ public class CrmApplication implements CommandLineRunner{
 	@Autowired
 	private Environment environment;
 	@Autowired
-	CRM2 crm;
+	CRM crm;
 
 	public static void main(String[] args) {
 

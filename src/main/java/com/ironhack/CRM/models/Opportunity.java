@@ -50,8 +50,15 @@ public class Opportunity {
         this.salesRep = salesRep;
     }
 
-
-    //SETTERS
+    public Opportunity(Product product, int quantity, Contact decisionMaker, SalesRep salesRep, Account account) {
+        this.product = product;
+        this.quantity = quantity;
+        this.decisionMaker = decisionMaker;
+        this.setStatus(Status.OPEN);
+        this.salesRep = salesRep;
+        this.account = account;
+    }
+//SETTERS
 
     public void setProduct(Product product) {
         this.product = product;
@@ -152,13 +159,13 @@ public class Opportunity {
 
     @Override
     public String toString() {
-        return "Opportunity " + id +
+        return "\nOpportunity " + id +
                 "\nProduct:  " + product +
                 "\nQuantity:  " + quantity +
                 "\nStatus:  " + status +
-                "\n\nDecision Maker:  " + decisionMaker +
-                "\n\nSales Rep:  " + salesRep +
-                "\n\nAccount:  " + account
+                "\nDecision Maker:  " + decisionMaker.getId() + " " + decisionMaker.getName() +
+                "\nSales Rep:  " + salesRep.getId() + " " + salesRep.getName() +
+                "\nAccount:  " + account.getId()
                 ;
     }
 }
