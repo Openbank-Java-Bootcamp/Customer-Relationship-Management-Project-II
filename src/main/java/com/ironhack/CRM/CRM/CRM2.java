@@ -1,19 +1,32 @@
-/*package com.ironhack.CRM.CRM;
-
+package com.ironhack.CRM.CRM;
 
 import com.ironhack.CRM.ConsoleColors.ConsoleColors;
+import com.ironhack.CRM.CrmApplication;
 import com.ironhack.CRM.enums.Industry;
 import com.ironhack.CRM.enums.Product;
 import com.ironhack.CRM.enums.Status;
 import com.ironhack.CRM.models.*;
 import com.ironhack.CRM.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CRM {
+@Component
+public class CRM2 {
+
+//    @Bean
+//    CommandLineRunner run(SalesRepRepository salesRepRepository1, LeadRepository leadRepository1, ContactRepository contactRepository1,
+//                          OpportunityRepository opportunityRepository1, AccountRepository accountRepository1) {
+//        return args -> {
+//            setUp(salesRepRepository1,leadRepository1, contactRepository1,opportunityRepository1,accountRepository1);
+//        };
+//    }
 
     @Autowired
     private LeadRepository leadRepository;
@@ -25,8 +38,6 @@ public class CRM {
     private SalesRepRepository salesRepRepository;
     @Autowired
     private ContactRepository contactRepository;
-
-
 
     public Map<String, Lead> leadList = new HashMap<>();
 
@@ -73,75 +84,78 @@ public class CRM {
             "\n (9) BACK";
 
 
-    public CRM() {
+    public CRM2() {
     }
 
-    private List<Lead> leads;
-    private List<Contact> contacts;
-    private List<SalesRep> salesReps;
-    private List<Opportunity> opportunities;
-    private List<Account> accounts;
-    void setUp() {
 
-        salesReps = salesRepRepository.saveAllAndFlush(List.of(
-                new SalesRep("Laura"),
-                new SalesRep("Edita"),
-                new SalesRep("Lina")
-        ));
-
-
-        leads = leadRepository.saveAll(List.of(
-                new Lead("Cris", 121212121, "lll@lll.lt", "Jasons", salesReps.get(1)),
-                new Lead("Jon", 111111111, "aaa@aaa.aa", "Jacks", salesReps.get(1)),
-                new Lead("Sandra", 222222222, "sss@sss.ss", "Thompson", salesReps.get(2)),
-                new Lead("Tom", 333333333, "ddd@ddd.dd", "Son", salesReps.get(1)),
-                new Lead("Thomas", 444444444, "fff@fff.ff", "Sons", salesReps.get(3)),
-                new Lead("Cristina", 555555555, "ggg@ggg.gg", "Jasons", salesReps.get(1)),
-                new Lead("Pedro", 666666666, "hhh@hhh.hh", "Pros", salesReps.get(2)),
-                new Lead("Cristina", 777777777, "jjj@jjj.jj", "Pross", salesReps.get(2)),
-                new Lead("Chris", 888888888, "eee@eee.ee", "Cross", salesReps.get(1)),
-                new Lead("Germis", 999999999, "rrr@rrr.rr", "CrossCountry", salesReps.get(3))
-        ));
-
-        contacts = contactRepository.saveAll(List.of(
-                new Contact("Cris", 121212121, "lll@lll.com"),
-                new Contact("Jon", 111111111, "aaa@aaa.aa"),
-                new Contact("Sandra", 222222222, "sss@sss.ss"),
-                new Contact("Tom", 333333333, "ddd@ddd.dd"),
-                new Contact("Thomas", 444444444, "fff@fff.ff"),
-                new Contact("Cristina", 555555555, "ggg@ggg.gg"),
-                new Contact("Pedro", 666666666, "hhh@hhh.hh"),
-                new Contact("Cristina", 777777777, "jjj@jjj.jj"),
-                new Contact("Chris", 888888888, "eee@eee.ee"),
-                new Contact("Germis", 999999999, "rrr@rrr.rr")
-        ));
-
-        opportunities = opportunityRepository.saveAll(List.of(
-                new Opportunity(Product.BOX, 10, contacts.get(1), salesReps.get(1)),
-                new Opportunity(Product.FLATBED, 1, contacts.get(2), salesReps.get(1)),
-                new Opportunity(Product.BOX, 15, contacts.get(3), salesReps.get(2)),
-                new Opportunity(Product.HYBRID, 2, contacts.get(4), salesReps.get(2)),
-                new Opportunity(Product.BOX, 5, contacts.get(5), salesReps.get(1)),
-                new Opportunity(Product.BOX, 50, contacts.get(6), salesReps.get(1)),
-                new Opportunity(Product.BOX, 4, contacts.get(7), salesReps.get(2)),
-                new Opportunity(Product.BOX, 4, contacts.get(8), salesReps.get(1)),
-                new Opportunity(Product.BOX, 4, contacts.get(9), salesReps.get(2)),
-                new Opportunity(Product.BOX, 4, contacts.get(10), salesReps.get(3))
-        ));
-
-        accounts = accountRepository.saveAll(List.of(
-                new Account(Industry.ECOMMERCE, 150, "Valencia", "Spain"),
-                new Account(Industry.MEDICAL, 15, "Madrid", "Spain"),
-                new Account(Industry.MANUFACTURING, 1, "London", "Uk"),
-                new Account(Industry.MANUFACTURING, 10, "Madrid", "Spain"),
-                new Account(Industry.MEDICAL, 25, "Madrid", "Spain"),
-                new Account(Industry.OTHER, 20, "London", "Uk"),
-                new Account(Industry.OTHER, 10, "London", "Uk"),
-                new Account(Industry.MEDICAL, 21, "Madrid", "Spain"),
-                new Account(Industry.ECOMMERCE, 10, "Barcelona", "Spain"),
-                new Account(Industry.MANUFACTURING, 5, "London", "Uk")
-        ));
-    }
+//    private List<Lead> leads;
+//    private List<Contact> contacts;
+//    private List<SalesRep> salesReps;
+//    private List<Opportunity> opportunities;
+//    private List<Account> accounts;
+//    void setUp(SalesRepRepository salesRepRepository2, LeadRepository leadRepository2,
+//               ContactRepository contactRepository2, OpportunityRepository opportunityRepository2,
+//               AccountRepository accountRepository2) {
+//
+//        salesReps = salesRepRepository2.saveAllAndFlush(List.of(
+//                new SalesRep("Laura"),
+//                new SalesRep("Edita"),
+//                new SalesRep("Lina")
+//        ));
+//
+//
+//        leads = leadRepository2.saveAll(List.of(
+//                new Lead("Cris", 121212121, "lll@lll.lt", "Jasons", salesReps.get(0)),
+//                new Lead("Jon", 111111111, "aaa@aaa.aa", "Jacks", salesReps.get(0)),
+//                new Lead("Sandra", 222222222, "sss@sss.ss", "Thompson", salesReps.get(1)),
+//                new Lead("Tom", 333333333, "ddd@ddd.dd", "Son", salesReps.get(0)),
+//                new Lead("Thomas", 444444444, "fff@fff.ff", "Sons", salesReps.get(2)),
+//                new Lead("Cristina", 555555555, "ggg@ggg.gg", "Jasons", salesReps.get(0)),
+//                new Lead("Pedro", 666666666, "hhh@hhh.hh", "Pros", salesReps.get(1)),
+//                new Lead("Cristina", 777777777, "jjj@jjj.jj", "Pross", salesReps.get(1)),
+//                new Lead("Chris", 888888888, "eee@eee.ee", "Cross", salesReps.get(0)),
+//                new Lead("Germis", 999999999, "rrr@rrr.rr", "CrossCountry", salesReps.get(2))
+//        ));
+//
+//        contacts = contactRepository2.saveAll(List.of(
+//                new Contact("Cris", 121212121, "lll@lll.com"),
+//                new Contact("Jon", 111111111, "aaa@aaa.aa"),
+//                new Contact("Sandra", 222222222, "sss@sss.ss"),
+//                new Contact("Tom", 333333333, "ddd@ddd.dd"),
+//                new Contact("Thomas", 444444444, "fff@fff.ff"),
+//                new Contact("Cristina", 555555555, "ggg@ggg.gg"),
+//                new Contact("Pedro", 666666666, "hhh@hhh.hh"),
+//                new Contact("Cristina", 777777777, "jjj@jjj.jj"),
+//                new Contact("Chris", 888888888, "eee@eee.ee"),
+//                new Contact("Germis", 999999999, "rrr@rrr.rr")
+//        ));
+//
+//        opportunities = opportunityRepository2.saveAll(List.of(
+//                new Opportunity(Product.BOX, 10, contacts.get(0), salesReps.get(0)),
+//                new Opportunity(Product.FLATBED, 1, contacts.get(1), salesReps.get(0)),
+//                new Opportunity(Product.BOX, 15, contacts.get(2), salesReps.get(1)),
+//                new Opportunity(Product.HYBRID, 2, contacts.get(3), salesReps.get(1)),
+//                new Opportunity(Product.BOX, 5, contacts.get(4), salesReps.get(0)),
+//                new Opportunity(Product.BOX, 50, contacts.get(5), salesReps.get(0)),
+//                new Opportunity(Product.BOX, 4, contacts.get(6), salesReps.get(1)),
+//                new Opportunity(Product.BOX, 4, contacts.get(7), salesReps.get(0)),
+//                new Opportunity(Product.BOX, 4, contacts.get(8), salesReps.get(1)),
+//                new Opportunity(Product.BOX, 4, contacts.get(9), salesReps.get(2))
+//        ));
+//
+//        accounts = accountRepository2.saveAll(List.of(
+//                new Account(Industry.ECOMMERCE, 150, "Valencia", "Spain"),
+//                new Account(Industry.MEDICAL, 15, "Madrid", "Spain"),
+//                new Account(Industry.MANUFACTURING, 1, "London", "Uk"),
+//                new Account(Industry.MANUFACTURING, 10, "Madrid", "Spain"),
+//                new Account(Industry.MEDICAL, 25, "Madrid", "Spain"),
+//                new Account(Industry.OTHER, 20, "London", "Uk"),
+//                new Account(Industry.OTHER, 10, "London", "Uk"),
+//                new Account(Industry.MEDICAL, 21, "Madrid", "Spain"),
+//                new Account(Industry.ECOMMERCE, 10, "Barcelona", "Spain"),
+//                new Account(Industry.MANUFACTURING, 5, "London", "Uk")
+//        ));
+//    }
 
 
 
@@ -256,7 +270,7 @@ public class CRM {
     }
 
 
-    public SalesRep chooseSalesRep(Scanner scanner) throws NoSuchElementException{
+    public SalesRep chooseSalesRep(Scanner scanner) throws NoSuchElementException {
         System.out.print("Sales Rep id:  ");
         String salesRepId = scanner.nextLine();
         if (!salesRepList.containsKey(salesRepId)) {
@@ -487,7 +501,7 @@ public class CRM {
                         "\nEnter (2) for Flatbed" +
                         "\nEnter (3) for Box"
         );
-        int productChoice = CRM.verifyIntInput(scanner, 1, 3);
+        int productChoice = verifyIntInput(scanner, 1, 3);
         switch(productChoice){
             case 1:
                 return Product.HYBRID;
@@ -512,7 +526,7 @@ public class CRM {
                         "\nEnter (4) for Medical"+
                         "\nEnter (5) for Other"
         );
-        int productChoice = CRM.verifyIntInput(scanner, 1, 5);
+        int productChoice = verifyIntInput(scanner, 1, 5);
         switch(productChoice){
             case 1:
                 return Industry.PRODUCE;
@@ -542,7 +556,7 @@ public class CRM {
         }
         Industry industryType = typeOfIndustry(scanner);
         System.out.println("Please type the number of employees");
-        int employeeCount = CRM.verifyIntInput(scanner, 1, Integer.MAX_VALUE);
+        int employeeCount = verifyIntInput(scanner, 1, Integer.MAX_VALUE);
         String city = null;
         while (city == null) {
             try {
@@ -688,12 +702,12 @@ public class CRM {
     public void chooseReportList(Scanner scanner) {
         System.out.println(reports);
         int scannerNum;
-        int reportChoice = CRM.verifyIntInput(scanner, 1, 9);
+        int reportChoice = verifyIntInput(scanner, 1, 9);
         switch (reportChoice) {
             case 1:
                 for (String each : bySalesRep) {
                     System.out.println(each);}
-                scannerNum = CRM.verifyIntInput(scanner, 1, 5);
+                scannerNum = verifyIntInput(scanner, 1, 5);
                 switch (scannerNum){
                     case 1:
                         System.out.println(leadRepository.findCountGroupBySalesRep().toString());
@@ -716,10 +730,14 @@ public class CRM {
                 for (String each : byProduct) {
                     System.out.println(each);
                 }
-                scannerNum = CRM.verifyIntInput(scanner, 1, 4);
+                scannerNum = verifyIntInput(scanner, 1, 4);
                 switch (scannerNum){
                     case 1:
-                        System.out.println(opportunityRepository.findCountGroupByProduct().toString());
+//                        List<Object[]> results = opportunityRepository.findCountGroupByProduct();
+//                        //for (int i; i <results.size();i++ ) {
+//                            //System.out.println(results.get(i)[0],  results.get(i)[1]);
+//                        }
+                        System.out.println();
                         break;
                     case 2:
                         System.out.println(opportunityRepository.findCountWithStatusWonGroupByProduct().toString());
@@ -735,7 +753,7 @@ public class CRM {
                 for (String each : byCountry) {
                     System.out.println(each);
                 }
-                scannerNum = CRM.verifyIntInput(scanner, 1, 4);
+                scannerNum = verifyIntInput(scanner, 1, 4);
                 switch (scannerNum){
                     case 1:
                         System.out.println(opportunityRepository.findCountGroupByCountry().toString());
@@ -754,7 +772,7 @@ public class CRM {
                 for (String each : byCity) {
                     System.out.println(each);
                 }
-                scannerNum = CRM.verifyIntInput(scanner, 1, 4);
+                scannerNum = verifyIntInput(scanner, 1, 4);
                 switch (scannerNum){
                     case 1:
                         System.out.println(opportunityRepository.countOpportunitiesByCity("a").toString());
@@ -773,7 +791,7 @@ public class CRM {
                 for (String each : byIndustry) {
                     System.out.println(each);
                 }
-                scannerNum = CRM.verifyIntInput(scanner, 1, 4);
+                scannerNum = verifyIntInput(scanner, 1, 4);
                 switch (scannerNum){
                     case 1:
                         System.out.println(opportunityRepository.findCountGroupByIndustry().toString());
@@ -792,26 +810,34 @@ public class CRM {
                 for (String each : byEmployeeCountStates) {
                     System.out.println(each);
                 }
-                scannerNum = CRM.verifyIntInput(scanner, 1, 4);
+                scannerNum = verifyIntInput(scanner, 1, 4);
                 switch (scannerNum){
                     case 1:
-                        System.out.println(accountRepository.findMeanEmployeeCount());
+                        System.err.println("No Accounts");
                         break;
                     case 2:
-                        System.out.println(accountRepository.findMedianEmployeeCount());
+                            List<Integer> employeeCounts = accountRepository.findEmployeeCounts();
+                            Collections.sort(employeeCounts);
+                            if (employeeCounts.size() % 2 == 1)
+                                System.out.println(employeeCounts.get((employeeCounts.size() + 1) / 2 - 1));
+                            else {
+                                double lower = employeeCounts.get(employeeCounts.size() / 2 - 1);
+                                double upper = employeeCounts.get(employeeCounts.size() / 2);
+                                System.out.println((lower + upper) / 2.0);
+                            }
                         break;
                     case 3:
-                        System.out.println(accountRepository.findMaxEmployeeCount());
+                            System.out.println(accountRepository.findMaxEmployeeCount());
                         break;
                     case 4:
-                        System.out.println(accountRepository.findMinEmployeeCount());
+                            System.out.println(accountRepository.findMinEmployeeCount());
                         break;
                 }
             case 7:
                 for (String each : byQuantityStates) {
                     System.out.println(each);
                 }
-                scannerNum = CRM.verifyIntInput(scanner, 1, 4);
+                scannerNum = verifyIntInput(scanner, 1, 4);
                 switch (scannerNum){
                     case 1:
                         System.out.println("opportunityRepository.1().toString()");
@@ -830,7 +856,7 @@ public class CRM {
                 for (String each : byOpportunityStates) {
                     System.out.println(each);
                 }
-                scannerNum = CRM.verifyIntInput(scanner, 1, 4);
+                scannerNum = verifyIntInput(scanner, 1, 4);
                 switch (scannerNum){
                     case 1:
                         System.out.println(opportunityRepository.countMeanOfOpportunitiesAssociatedToAccount().toString());
@@ -848,4 +874,3 @@ public class CRM {
         }
     }
 }
-*/

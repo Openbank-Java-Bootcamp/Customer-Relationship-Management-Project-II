@@ -1,22 +1,31 @@
 package com.ironhack.CRM.repositories;
 
+import com.ironhack.CRM.CrmApplication;
 import com.ironhack.CRM.enums.Industry;
 import com.ironhack.CRM.models.Account;
+import com.ironhack.CRM.service.AccountService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.stereotype.Repository;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
+@ActiveProfiles("test")
 class AccountRepositoryTest {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private AccountService accountService;
 
     private List<Account> accounts;
 
@@ -50,8 +59,8 @@ class AccountRepositoryTest {
     }
 
     @Test
-    public void findMedianEmployeeCount() {
-        assertEquals(125, accountRepository.findMedianEmployeeCount());
+    public void findEmployeeCounts() {
+        assertEquals(5, accountRepository.findEmployeeCounts().size());
     }
 
     @Test

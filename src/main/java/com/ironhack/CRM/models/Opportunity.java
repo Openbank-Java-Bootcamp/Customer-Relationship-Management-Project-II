@@ -69,6 +69,17 @@ public class Opportunity {
         this.status = status;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setSalesRep(SalesRep salesRep) {
+        this.salesRep = salesRep;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
 
     //GETTERS
 
@@ -93,11 +104,19 @@ public class Opportunity {
         return status;
     }
 
+    public SalesRep getSalesRep() {
+        return salesRep;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
 
     //METHODS
     public static String createID() {
         return String.valueOf(opportunityIdCounter.getAndIncrement() + 1);
     }
+
 
 
     //EQUALS, HASHCODE & ToString
