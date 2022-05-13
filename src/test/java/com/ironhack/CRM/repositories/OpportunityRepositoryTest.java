@@ -377,7 +377,25 @@ class OpportunityRepositoryTest {
     }
 
 
+    @Test
+    public void findMeanProductCount() {
+        assertEquals(10, opportunityRepository.findMeanProductCount());
+    }
 
+    @Test
+    public void findMedianProductCount() {
+        assertEquals(1, opportunityRepository.findMedianProductCount());
+    }
+
+    @Test
+    public void findMaxEmployeeCount() {
+        assertEquals(15, opportunityRepository.findMaxEmployeeCount());
+    }
+
+    @Test
+    public void findMinProductCount() {
+        assertEquals(2, opportunityRepository.findMinProductCount());
+    }
 
 
 }
