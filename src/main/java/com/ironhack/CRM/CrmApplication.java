@@ -31,4 +31,13 @@ public class CrmApplication {
 		scanner.close();
 	}
 
+
+	@Bean
+	CommandLineRunner run(SalesRepRepository salesRepRepository1, LeadRepository leadRepository1, ContactRepository contactRepository1,
+						  OpportunityRepository opportunityRepository1, AccountRepository accountRepository1) {
+		return args -> {
+			setUp(salesRepRepository1,leadRepository1, contactRepository1,opportunityRepository1,accountRepository1);
+		};
+	}
+
 }

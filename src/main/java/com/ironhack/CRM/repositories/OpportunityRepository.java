@@ -50,22 +50,24 @@ public interface OpportunityRepository extends JpaRepository<Opportunity, String
 
     //By country:
     //Report Opportunity by country
-    @Query(value = "SELECT COUNT(*) FROM opportunity GROUP BY country", nativeQuery = true)
-    List<Opportunity> findCountGroupByCountry();
+
+    @Query(value = "SELECT account.country, COUNT(*) FROM opportunity, account WHERE opportunity.account_id = account.id GROUP BY account.country ORDER BY account.country", nativeQuery = true)
+    List<Object[]> findCountGroupByCountry();
 
     //Report CLOSED-WON by the country
-    @Query(value = "SELECT COUNT(*) FROM opportunity WHERE status = 'CLOSED_WON' GROUP BY country", nativeQuery = true)
-    List<Opportunity> findCountWithStatusWonGroupByCountry();
+
+    @Query(value = "SELECT account.country, COUNT(*) FROM opportunity, account WHERE opportunity.account_id = account.id AND status = 'CLOSED_WON' GROUP BY account.country ORDER BY account.country", nativeQuery = true)
+    List<Object[]> findCountWithStatusWonGroupByCountry();
 
     //Report CLOSED-LOST by the country
-    @Query(value = "SELECT COUNT(*) FROM opportunity WHERE status = 'CLOSED_LOST' GROUP BY country", nativeQuery = true)
-    List<Opportunity> findCountWithStatusLostGroupByCountry();
+
+    @Query(value = "SELECT account.country, COUNT(*) FROM opportunity, account WHERE opportunity.account_id = account.id AND status = 'CLOSED_LOST' GROUP BY account.country ORDER BY account.country", nativeQuery = true)
+    List<Object[]> findCountWithStatusLostGroupByCountry();
 
     //Report OPEN by country
 
-    @Query(value = "SELECT COUNT(*) FROM opportunity WHERE status = 'OPEN' GROUP BY country", nativeQuery = true)
-    List<Opportunity> findCountWithStatusOpenGroupByCountry();
-
+    @Query(value = "SELECT account.country, COUNT(*) FROM opportunity, account WHERE opportunity.account_id = account.id AND status = 'OPEN' GROUP BY account.country ORDER BY country", nativeQuery = true)
+    List<Object[]> findCountWithStatusOpenGroupByCountry();
 
 
     //By Industry:
@@ -89,25 +91,14 @@ public interface OpportunityRepository extends JpaRepository<Opportunity, String
 
     //By Quantity:
 
-    // The mean quantity of products order can be displayed by typing “Mean Quantity”
-    @Query(value = "SELECT AVG(quantity_of_product) FROM opportunity", nativeQuery = true)
-    double findMeanEmployeeCount();
+    // Mean quantity of products
 
-    // The median quantity of products order can be displayed by typing “Median Quantity”
-    @Query(value = "SELECT AVG(aa.quantity_of_product) as median" +
-            " FROM (" +
-            "SELECT a.quantity_of_product, @rownum:=@rownum+1 as `row_number`, @total_rows:=@rownum" +
-            " FROM account a, (SELECT @rownum:=0) r" +
-            " WHERE a.quantity_of_product is NOT NULL" +
-            " ORDER BY a.quantity_of_product) as aa" +
-            " WHERE aa.row_number IN (FLOOR((@total_rows+1)/2), FLOOR((@total_rows+2)/2));", nativeQuery = true)
-    int findMedianQuantityProduct();
-    // The maximum quantity of products order can be displayed by typing “Max Quantity”
-    @Query(value = "SELECT MAX(quantity_of_product) FROM opportunity", nativeQuery = true)
-    int MaxQuantityOfProduct();
-    // The minimum quantity of products order can be displayed by typing “Min Quantity”
-    @Query(value = "SELECT MIN(quantity_of_product) FROM opportunity", nativeQuery = true)
-    int MinQuantityOfProduct();
+
+    // Median quantity of products
+
+    // Maximum quantity of products
+
+    // Minimum quantity of products
 
 
     //CITY
