@@ -89,47 +89,32 @@ public interface OpportunityRepository extends JpaRepository<Opportunity, String
 
     //By Quantity:
 
-    // The mean quantity of products order can be displayed by typing “Mean Quantity”
-    @Query(value = "SELECT AVG(quantity_of_product) FROM opportunity", nativeQuery = true)
-    double findMeanEmployeeCount();
-
-    // The median quantity of products order can be displayed by typing “Median Quantity”
-    @Query(value = "SELECT AVG(aa.quantity_of_product) as median" +
-            " FROM (" +
-            "SELECT a.quantity_of_product, @rownum:=@rownum+1 as `row_number`, @total_rows:=@rownum" +
-            " FROM account a, (SELECT @rownum:=0) r" +
-            " WHERE a.quantity_of_product is NOT NULL" +
-            " ORDER BY a.quantity_of_product) as aa" +
-            " WHERE aa.row_number IN (FLOOR((@total_rows+1)/2), FLOOR((@total_rows+2)/2));", nativeQuery = true)
-    int findMedianQuantityProduct();
-    // The maximum quantity of products order can be displayed by typing “Max Quantity”
-    @Query(value = "SELECT MAX(quantity_of_product) FROM opportunity", nativeQuery = true)
-    int MaxQuantityOfProduct();
-    // The minimum quantity of products order can be displayed by typing “Min Quantity”
-    @Query(value = "SELECT MIN(quantity_of_product) FROM opportunity", nativeQuery = true)
-    int MinQuantityOfProduct();
+    // Mean quantity of products
 
 
-    //CITY
+    // Median quantity of products
+
+    // Maximum quantity of products
+
+    // Minimum quantity of products
+
+
     //“Report Opportunity by City”
-    @Query(value = "SELECT city, COUNT(*) FROM opportunity GROUP BY city", nativeQuery = true)
-    List<Object[]> findCountGroupByCity();
+    @Query(value = "SELECT city, COUNT (*) FROM opportunity WHERE city = :city GROUP BY city", nativeQuery = true)
+    Integer countOpportunitiesByCity(String city);
 
     //“Report CLOSED-WON by City”
-    @Query(value = "SELECT city, COUNT(*) FROM opportunity WHERE status = 'CLOSED_WON' GROUP BY city", nativeQuery = true)
-    List<Object[]> findCountWithStatusWonGroupByCity();
+    @Query(value = "SELECT COUNT (*) FROM opportunity WHERE city = :city AND status = 'CLOSED-WON' GROUP BY city", nativeQuery = true)
+    Integer countOpportunitiesByCityWithStatusCloseWon(String city);
 
     //“Report CLOSED-LOST by City”
-    @Query(value = "SELECT city, COUNT(*) FROM opportunity WHERE status = 'CLOSED_LOST' GROUP BY city", nativeQuery = true)
-    List<Object[]> findCountWithStatusLostGroupByCity();
+    @Query(value = "SELECT COUNT (*) FROM opportunity where city = :city AND status = 'CLOSE-LOST' GROUP BY city", nativeQuery = true)
+    Integer countOpportunitiesByCityWithStatusCloseLost(String city);
 
     //“Report OPEN by City”
-    @Query(value = "SELECT city, COUNT(*) FROM opportunity WHERE status = 'OPEN' GROUP BY city", nativeQuery = true)
-    List<Object[]> findCountWithStatusOpenGroupByCity();
+    @Query(value = "SELECT COUNT (*) FROM opportunity where city = :city AND status = 'open' GROUP BY city", nativeQuery = true)
+    Integer countOpportunitiesByCityWithStatusOpen(String city);
 
-
-
-    //OPPORTUNITY
     //The mean number of Opportunities associated with an Account can be displayed by typing “Mean Opps per Account”
     @Query(value = "SELECT AVG(opportunities_per_account) FROM (SELECT COUNT (*) opportunities_per_account FROM opportunity GROUP BY account_id) sums", nativeQuery = true)
     Double countMeanOfOpportunitiesAssociatedToAccount();
