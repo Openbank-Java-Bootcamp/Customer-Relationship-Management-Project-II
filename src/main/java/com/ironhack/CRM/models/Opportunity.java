@@ -50,8 +50,15 @@ public class Opportunity {
         this.salesRep = salesRep;
     }
 
-
-    //SETTERS
+    public Opportunity(Product product, int quantity, Contact decisionMaker, SalesRep salesRep, Account account) {
+        this.product = product;
+        this.quantity = quantity;
+        this.decisionMaker = decisionMaker;
+        this.setStatus(Status.OPEN);
+        this.salesRep = salesRep;
+        this.account = account;
+    }
+//SETTERS
 
     public void setProduct(Product product) {
         this.product = product;
@@ -69,6 +76,17 @@ public class Opportunity {
         this.status = status;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setSalesRep(SalesRep salesRep) {
+        this.salesRep = salesRep;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
 
     //GETTERS
 
@@ -93,11 +111,19 @@ public class Opportunity {
         return status;
     }
 
+    public SalesRep getSalesRep() {
+        return salesRep;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
 
     //METHODS
     public static String createID() {
         return String.valueOf(opportunityIdCounter.getAndIncrement() + 1);
     }
+
 
 
     //EQUALS, HASHCODE & ToString
@@ -133,13 +159,13 @@ public class Opportunity {
 
     @Override
     public String toString() {
-        return "Opportunity " + id +
+        return "\nOpportunity " + id +
                 "\nProduct:  " + product +
                 "\nQuantity:  " + quantity +
                 "\nStatus:  " + status +
-                "\n\nDecision Maker:  " + decisionMaker +
-                "\n\nSales Rep:  " + salesRep +
-                "\n\nAccount:  " + account
+                "\nDecision Maker:  " + decisionMaker.getId() + " " + decisionMaker.getName() +
+                "\nSales Rep:  " + salesRep.getId() + " " + salesRep.getName() +
+                "\nAccount:  " + account.getId()
                 ;
     }
 }

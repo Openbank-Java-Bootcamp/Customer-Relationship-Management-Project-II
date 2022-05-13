@@ -110,12 +110,11 @@ public class Contact {
 
     @Override
     public String toString() {
-        return "Contact{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", phoneNumber=" + phoneNumber +
-                ", email='" + email + '\'' +
-                '}';
+        return "\nContact " + id + ':' +
+                "\nname:  " + name +
+                "\nphoneNumber:  " + phoneNumber +
+                "\nemail:  " + email
+                ;
     }
 }
 
